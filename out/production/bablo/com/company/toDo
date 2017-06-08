@@ -1,0 +1,25 @@
+BabloBot:
+
+BotAnswers:
+
+ConsoleController:
+
+ConsoleView:
+
+Costs:
+
+CreateSQL:
+
+DAO:
+
+Inputs:
+
+MainMenu:
+
+
+SELECT category, SUM(costs.value), amount
+FROM category
+INNER JOIN costs
+ON id=costs.category_id;
+INNER JOIN category
+ON category_id=category.id;
