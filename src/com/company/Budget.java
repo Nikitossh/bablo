@@ -3,8 +3,8 @@ package com.company;
 import java.time.LocalDate;
 
 import static com.company.ConsoleView.printListCategories;
-import static com.company.Costs.getCategoriesList;
-import static com.company.Costs.inputDate;
+import static com.company.Cost.getCategoriesList;
+import static com.company.Cost.inputDate;
 import static com.company.Inputs.inputString;
 
 /**
@@ -16,53 +16,53 @@ public class Budget {
     private String comment;
     private String category;
 
-    public static void main(String[] args) {
-        printListCategories(getCategoriesList());
-        System.out.println("Все верно? Сохраняем в БД? Y/n");
-        if (agree()) {
-            System.out.print("Is true!");
-        }
-        else System.out.print("Its false");
-    }
-
-    public static void sCreateCategoryBudget() {
-        new Budget().createCategoryBudget();
-    }
-
-    public Budget createCategoryBudget() {
-        Budget budget = new Budget();
-        budget.selectDate();
-        budget.selectAmount();
-        budget.selectCategory();
-        budget.selectComment();
-        budget.printPreInsert();
-        return budget;
-    }
-
-    public  void selectDate() {
-        System.out.println("Please, choose the year and month as yyyy-MM-dd");
-        Costs.setDate(inputDate());
-    }
-
-    public void selectCategory() {
-        System.out.println("Выберите категорию из списка:");
-        printListCategories(getCategoriesList());
-        setCategory(inputString());
-    }
-
-    public void selectAmount() {
-        System.out.println("Введите сумму:");
-        setAmount(Inputs.inputInt());
-    }
-
-    public void selectComment() {
-        System.out.println("Введите комментарий:");
-        setComment(Inputs.inputString());
-    }
-
-    public void printPreInsert() {
-        System.out.print(getCategory() + "  " + getAmount() + "  " + getComment());
-    }
+//    public static void main(String[] args) {
+//        printListCategories(getCategoriesList());
+//        System.out.println("Все верно? Сохраняем в БД? Y/n");
+//        if (agree()) {
+//            System.out.print("Is true!");
+//        }
+//        else System.out.print("Its false");
+//    }
+//
+//    public static void sCreateCategoryBudget() {
+//        new Budget().createCategoryBudget();
+//    }
+//
+//    public Budget createCategoryBudget() {
+//        Budget budget = new Budget();
+//        budget.selectDate();
+//        budget.selectAmount();
+//        budget.selectCategory();
+//        budget.selectComment();
+//        budget.printPreInsert();
+//        return budget;
+//    }
+//
+//    public  void selectDate() {
+//        System.out.println("Please, choose the year and month as yyyy-MM-dd");
+//        Cost.setDate(inputDate());
+//    }
+//
+//    public void selectCategory() {
+//        System.out.println("Выберите категорию из списка:");
+//        printListCategories(getCategoriesList());
+//        setCategory(inputString());
+//    }
+//
+//    public void selectAmount() {
+//        System.out.println("Введите сумму:");
+//        setAmount(Inputs.inputInt());
+//    }
+//
+//    public void selectComment() {
+//        System.out.println("Введите комментарий:");
+//        setComment(Inputs.inputString());
+//    }
+//
+//    public void printPreInsert() {
+//        System.out.print(getCategory() + "  " + getAmount() + "  " + getComment());
+//    }
 
     public static boolean agree() {
         System.out.println("Все верно? Y/n");

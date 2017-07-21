@@ -6,22 +6,20 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 import static com.company.ConsoleView.getListCategories;
-import static com.company.CreateSQL.selectListCategories;
-import static com.company.Inputs.inputInt;
 import static com.company.Inputs.inputString;
 
 /**
  * Created by nik on 4/12/17.
  */
-public class Costs {
+public class Cost {
     private static int value;
     private static String category;
     private static String comment;
     private static LocalDate date;
 
 
-    public static Costs createCost()  {
-        Costs cost = new Costs();
+    public static Cost createCost()  {
+        Cost cost = new Cost();
         System.out.println(getDate() + " " + getValue() + " " + getCategory() + " " + getComment());
         setDate(date);
         setValue(value);
@@ -56,7 +54,7 @@ public class Costs {
     }
 
     static LocalDate inputDate() {
-        //System.out.println("Введите дату в формате yyyy-mm-dd");
+        System.out.println("Формат ввода даты в виде yyyy-MM-dd");
         String date = inputString();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate result = LocalDate.parse(date, formatter);
@@ -79,7 +77,7 @@ public class Costs {
         System.out.println("Выполняется проверка валидности введенных данных...");
     }
 
-    public static void printCost(Costs cost) {
+    public static void printCost(Cost cost) {
         System.out.print(getDate().toString() + "  ");
         System.out.print(getValue() + "  ");
         System.out.print(getCategory() + "  ");
@@ -88,7 +86,7 @@ public class Costs {
     }
 
     public static void setValue(int value) {
-        Costs.value = value;
+        Cost.value = value;
     }
 
     public static int getValue() {
@@ -100,7 +98,7 @@ public class Costs {
     }
 
     public static void setCategory(String category) {
-        Costs.category = category;
+        Cost.category = category;
     }
 
     public static String getComment() {
@@ -108,7 +106,7 @@ public class Costs {
     }
 
     public static void setComment(String comment) {
-        Costs.comment = comment;
+        Cost.comment = comment;
     }
 
     public  static LocalDate getDate() {
@@ -116,7 +114,7 @@ public class Costs {
     }
 
     public static void setDate(LocalDate date) {
-        Costs.date = date;
+        Cost.date = date;
     }
 
 

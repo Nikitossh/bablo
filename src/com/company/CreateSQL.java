@@ -4,8 +4,6 @@ package com.company;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
-import java.time.LocalDate;
-
 /**
  * Created by nik on 4/17/17.
  * This class about add new costs to database
@@ -14,7 +12,7 @@ public class CreateSQL {
 
 // Трата
     @NotNull
-    static String insertNewCost(Costs cost) {
+    static String insertNewCost(Cost cost) {
         return "INSERT INTO bablo.costs" +
                 "(value, comment, date_id, category_id) " +
                 "VALUES (" +
@@ -47,7 +45,7 @@ public class CreateSQL {
 
     @NotNull
     @Contract(pure = true)
-    static String selectTotalValuesThisMonth() {
+    static String selectMonthCosts() {
         return "SELECT SUM(costs.value) AS value " +
                 "FROM costs " +
                 "INNER JOIN category " +
@@ -61,8 +59,8 @@ public class CreateSQL {
 
 // Дата и время
     @NotNull
-    static String insertNewDate(Costs cost) {
-    String date = "'" + Costs.getDate().toString() + "'";
+    static String insertNewDate(Cost cost) {
+    String date = "'" + Cost.getDate().toString() + "'";
 
         return "INSERT IGNORE INTO date(date) VALUES (" + date + ");";
     }
@@ -84,25 +82,13 @@ public class CreateSQL {
                 "AND " +
                 "YEAR(date)=YEAR(NOW()) " +
                 "GROUP BY category;";
+        // За предыдущий месяц.
+//        SELECT category.category, SUM(costs.value) AS value,  budget.amount FROM costs INNER JOIN category
+//        ON costs.category_id=category.id
+//        INNER JOIN budget ON costs.category_id=budget.category_id
+//        INNER JOIN date ON costs.date_id=date.id
+//        WHERE MONTH(date)=MONTH(DATE_ADD(NOW(), INTERVAL -1 MONTH)) AND YEAR(date)=YEAR(NOW()) GROUP BY category;
     }
-
-
-    @NotNull
-    @Contract(pure = true)
-    static String selectMonthAndYear(int month, int year) {
-        return "SELECT category.category, SUM(costs.value) AS value " +
-                "FROM costs " +
-                "INNER JOIN category " +
-                "ON costs.category_id=category.id " +
-                "INNER JOIN date " +
-                "ON costs.date_id=date.id " +
-                "WHERE MONTH(date)='" + month + "' " +
-                "AND " +
-                "YEAR(date)='" + year + "' " +
-                "GROUP BY category;";
-    }
-
-
 
 
 // Категории

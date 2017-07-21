@@ -7,16 +7,23 @@ import java.util.Map;
 
 import static com.company.ConsoleView.getListCategories;
 import static com.company.ConsoleView.getCountCategories;
+import static com.company.ConsoleView.printCostAddedFail;
 
 /**
  * Created by nik on 6/2/17.
+ * При создании экземпляра класса, создается список Map, конструктор которого опрашивает БД
+ * и на основе ответа заполняет список.
  */
 public class Categories {
-    ResultSet resultSet = null;
-    //Map map = new HashMap<>();
-    int count = 0;
+    static Map<Integer, String> categories;
+
 
     public static void  main(String[] args) {
+
+        for(Map.Entry entry : categories.entrySet()) {
+            System.out.println("Key: " + entry.getKey() + "Value: " + entry.getValue());
+        }
+
 
         int count = 0;
         ArrayList categoryArrayList = new ArrayList();
@@ -28,9 +35,9 @@ public class Categories {
         categoryArrayList = getListCategories(categoryList);
         // Создаем Map
         System.out.println("Создаем и заполняем map");
-        Map<Integer, String> map1 = new HashMap<>();
         for (int i = 0; i < count; i++) {
-            map1.put(i, (String) categoryArrayList.get(i));
+            System.out.println(categoryArrayList.get(i));
+            categories.put(i, (String) categoryArrayList.get(i));
         }
         System.out.println("Создан!");
         System.out.println("Вводим:");

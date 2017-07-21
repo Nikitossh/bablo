@@ -1,6 +1,7 @@
 package com.company;
 
 import com.sun.org.apache.regexp.internal.RE;
+import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -75,23 +76,6 @@ public class ConsoleView {
         System.out.println("Текущие траты за этот месяц:");
     }
 
-    static void printSelectListCategories(ResultSet resultSet) {
-        int number = 1;
-
-        try {
-            while (resultSet.next()) {
-                String category = resultSet.getString(1);
-                System.out.println(number + ". " + category );
-                number++;
-            }
-            System.out.println("Для добавления новой категории введите 'new'");
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-
-
 
 
     // Вывод в консоль списка категорий.
@@ -129,6 +113,8 @@ public class ConsoleView {
 
 
     public static void printSelectLastCost(ResultSet resultSet) {
+        int categoryLength;
+        int valueLength;
         try {
             while (resultSet.next()) {
                 String id = resultSet.getString(1);
@@ -137,7 +123,36 @@ public class ConsoleView {
                 String comment = resultSet.getString(4);
                 String date = resultSet.getString(5);
 
-                System.out.println(id + "\t\t" + category + "\t\t" + value + "\t\t" + comment + "\t\t" + date);
+                // Проверка длины слова категории для выравнивания при выводе в консоль
+                if (category.length() < 5) {
+                    categoryLength = 3;
+                } else if (category.length() < 9) {
+                    categoryLength = 3;
+                } else if (category.length() < 14) {
+                    categoryLength = 2;
+                } else categoryLength = 1;
+
+                // Проверка длины значения траты для выравнивания при выводе на консоль
+                if (value.length() <= 3) {
+                    valueLength = 2;
+                } else if (value.length() <= 7) {
+                    valueLength = 1;
+                } else valueLength = 3;
+
+                // Вывод в консоль значений, разделенных табом с помощью метода printTab()
+                System.out.print(id);
+                printTab(1);
+                System.out.print(date);
+                printTab(1);
+                System.out.print(category);
+                // Варьируется после категории, взависимости от длины слова
+                printTab(categoryLength);
+                System.out.print(value);
+                // Варьируется от длины суммы
+                printTab(valueLength);
+                System.out.print(comment);
+                System.out.println();
+
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -145,7 +160,10 @@ public class ConsoleView {
 
     }
 
-    public static void printSelectTotalThisMonth(ResultSet resultSet) {
+
+
+
+    public static void printSelectCostsSummThisMonth(ResultSet resultSet) {
         System.out.println("------------------------------------------");
         try {
             if (resultSet.next()) {
@@ -153,7 +171,7 @@ public class ConsoleView {
                 printTab(4);
                 System.out.print(resultSet.getString(1));
                 if (resultSet.getString(1).length() < 4)               printTab(3);
-                else                                                               printTab(2);
+                else                                                      printTab(2);
             }
         } catch (SQLException e) {
             System.out.println("ОШИБКА ПРИ ПАРСИНГЕ РЕЗАЛТСЕТА!!!!!!!!!!");
@@ -161,7 +179,7 @@ public class ConsoleView {
         }
     }
 
-    public static void printSelectTotalAmountThisMonth(ResultSet resultSet) {
+    public static void printSelectBudgetSummThisMonth(ResultSet resultSet) {
         try {
             if (resultSet.next()) {
                 System.out.print(resultSet.getInt(1));

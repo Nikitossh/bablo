@@ -5,6 +5,8 @@ package com.company;
  */
 
 //import com.sun.deploy.uitoolkit.ui.ConsoleController;
+import org.telegram.telegrambots.ApiContextInitializer;
+import org.telegram.telegrambots.TelegramBotsApi;
 import org.telegram.telegrambots.api.methods.AnswerCallbackQuery;
 import org.telegram.telegrambots.api.methods.AnswerInlineQuery;
 import org.telegram.telegrambots.api.methods.send.SendMessage;
@@ -26,7 +28,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import static com.company.Costs.getCategoriesList;
+import static com.company.Cost.getCategoriesList;
 
 
 public class BabloBot extends TelegramLongPollingBot {
@@ -34,13 +36,13 @@ public class BabloBot extends TelegramLongPollingBot {
     public static void main(String[] args) {
         ConsoleView.printMainMenu();
         ConsoleController.selectMainMenu();
-        /*ApiContextInitializer.init();
+        ApiContextInitializer.init();
         TelegramBotsApi telegramBotsApi = new TelegramBotsApi();
         try {
             telegramBotsApi.registerBot(new BabloBot());
         } catch (TelegramApiException e) {
             e.printStackTrace();
-        }*/
+        }
     }
 
     @Override
@@ -55,8 +57,8 @@ public class BabloBot extends TelegramLongPollingBot {
 
     @Override
     public void onUpdateReceived(Update update) {
-        //Message message = update.getMessage();
-        /*if (message != null && message.hasText()) {
+        /*Message message = update.getMessage();
+         if (message != null && message.hasText()) {
             // Информация о боте и доступных командах.
             if (message.getText().equals("/help"))
                 sendMsg(message, "Привет, я робот");
@@ -76,15 +78,15 @@ public class BabloBot extends TelegramLongPollingBot {
             // Перед нами четыре кнопки, присваивающие значение переменной date
             // Если выбрана четвертая, то дату нужно ввести с клавиатуры.
             if (message.getText().equals("Позавчера")) {
-                Costs.setDate(LocalDate.now().minusDays(2));
+                Cost.setDate(LocalDate.now().minusDays(2));
                 setCategory(message);
             }
             if (message.getText().equals("Вчера")) {
-                Costs.setDate(LocalDate.now().minusDays(1));
+                Cost.setDate(LocalDate.now().minusDays(1));
                 setCategory(message);
             }
             if (message.getText().equals("Сегодня")) {
-                Costs.setDate(LocalDate.now());
+                Cost.setDate(LocalDate.now());
                 setCategory(message);
             }
             if (message.getText().equals("Другая дата")) {
@@ -133,6 +135,7 @@ public class BabloBot extends TelegramLongPollingBot {
                 inlineQueryResultArticle.setInputMessageContent(inputTextMessageContent);
                 // Добавляем в массив созданный результат.
                 results.add(inlineQueryResultArticle);
+
 
                 // Присваиваем массив для передачи ответом
                 answerInlineQuery.setResults(results);

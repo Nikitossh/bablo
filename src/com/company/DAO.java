@@ -65,24 +65,37 @@ public class DAO {
         return result;
     }
 
+
+
+
+
+
+
+
+
     // Далее идет блок выполнения запросов полученных из класса CreateSQL
 
     // Все что связано с датой и временем
     // Добавление даты
-    static int insertionData(Costs cost) {
+    static int insertionData(Cost cost) {
         return executePreparedUpdate(createPreparedStatement(CreateSQL.insertNewDate(cost)));
     }
 
     // Все что связано с тратами
     // Добавляем запись.
-    static int insertionCost(Costs cost) {
+    static int insertionCost(Cost cost) {
        return executePreparedUpdate(createPreparedStatement(CreateSQL.insertNewCost(cost)));
+    }
+
+    // Удаление последней записи по ID
+    static int deletionCost() {
+        return executePreparedUpdate(createPreparedStatement(CreateSQL.deleteLastCost()));
     }
 
     // Выборка последних пяти трат
     // Для другого количества меняем limit
-    static ResultSet selectionLastCosts() {
-        String sql = CreateSQL.selectLastCost(5);
+    static ResultSet selectionLastCosts(int limit) {
+        String sql = CreateSQL.selectLastCost(limit);
         ResultSet rs = executePreparedStatement(createPreparedStatement(sql));
         return rs;
     }
@@ -96,7 +109,7 @@ public class DAO {
 
     // Сумма всех трат за текущий месяц
     static ResultSet selectionTotalValuesThisMonth() {
-        String sql = CreateSQL.selectTotalValuesThisMonth();
+        String sql = CreateSQL.selectMonthCosts();
         ResultSet rs = executePreparedStatement(createPreparedStatement(sql));
         return rs;
     }

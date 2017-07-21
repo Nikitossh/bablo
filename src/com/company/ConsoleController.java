@@ -1,10 +1,7 @@
 package com.company;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-
 import static com.company.ConsoleView.*;
-import static com.company.Costs.*;
+import static com.company.Cost.*;
 import static com.company.DAO.*;
 import static com.company.Inputs.inputInt;
 import static com.company.Inputs.inputString;
@@ -18,7 +15,7 @@ public class ConsoleController {
     public static void selectMainMenu() {
         int selector = inputInt();
 
-        Costs cost = new Costs();
+        Cost cost = new Cost();
         switch (selector) {
             case 1:
                 // Здесь вся логика работы программы при работе из консоли
@@ -61,7 +58,7 @@ public class ConsoleController {
 
             case 2:
                 printLastCosts();
-                printSelectLastCost(selectionLastCosts());
+                printSelectLastCost(selectionLastCosts(5));
                 printMainMenu();
                 selectMainMenu();
                 break;
@@ -69,8 +66,8 @@ public class ConsoleController {
             case 3:
                 printLastMonth();
                 printSelectThisMonth(selectionThisMonth());
-                printSelectTotalThisMonth(selectionTotalValuesThisMonth());
-                printSelectTotalAmountThisMonth(selectionTotalBudgetThisMonth());
+                printSelectCostsSummThisMonth(selectionTotalValuesThisMonth());
+                printSelectBudgetSummThisMonth(selectionTotalBudgetThisMonth());
                 // Print total
                 printMainMenu();
                 selectMainMenu();
@@ -84,6 +81,14 @@ public class ConsoleController {
 
             case 5:
                 System.out.println("Удаление последней траты");
+                System.out.println("Вы действительно хотите удалить эту трату?");
+                printSelectLastCost(selectionLastCosts(1));
+                System.out.println("Введите y, если хотите или другой символ для выхода");
+                String answer = inputString();
+                if (answer.equals("y") || answer.equals("Y")) {
+                    deletionCost();
+                    System.out.println("Запись удалена!");
+                }
                 printMainMenu();
                 selectMainMenu();
                 break;

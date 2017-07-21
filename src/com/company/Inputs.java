@@ -16,9 +16,13 @@ public class Inputs {
         while(true) {
             try {
                 result = Integer.parseInt(reader.readLine());
+                break;
             } catch (IOException e) {
                 e.printStackTrace();
                 System.out.println("В введенном числе ошибка, введите его заново");
+            } catch (NumberFormatException ex) {
+                //ex.printStackTrace();
+                System.out.println("Вводите только числа, пожалуйста. Повторите ввод.");
             }
             break;
         }
@@ -33,6 +37,7 @@ public class Inputs {
         while(true) {
             try {
                 result = reader.readLine();
+                break;
             } catch (IOException e) {
                 e.printStackTrace();
                 System.out.println("Ввод строки произошел с ошибкой. Повторите ввод корректно");
