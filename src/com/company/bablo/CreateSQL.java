@@ -1,12 +1,14 @@
-package com.company;
+package com.company.bablo;
 
 
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
+import java.time.LocalDate;
+
 /**
  * Created by nik on 4/17/17.
- * This class about add new costs to database
+ *
  */
 public class CreateSQL {
 
@@ -32,7 +34,6 @@ public class CreateSQL {
     @NotNull
     @Contract(pure = true)
     static String selectLastCost(int limit) {
-
         return "SELECT costs.id, category.category, costs.value, costs.comment, date.date " +
                 "FROM costs " +
                 "INNER JOIN category " +
@@ -45,17 +46,31 @@ public class CreateSQL {
 
     @NotNull
     @Contract(pure = true)
-    static String selectMonthCosts() {
+    static String selectMonthTotalValueOfCosts(int interval) {
         return "SELECT SUM(costs.value) AS value " +
                 "FROM costs " +
                 "INNER JOIN category " +
                 "ON costs.category_id=category.id " +
                 "INNER JOIN date " +
                 "ON costs.date_id=date.id " +
-                "WHERE MONTH(date)=MONTH(NOW()) " +
+                "WHERE MONTH(date)=MONTH(DATE_ADD(NOW(), INTERVAL -" + interval + " MONTH))" +
                 "AND " +
                 "YEAR(date)=YEAR(NOW());";
     }
+
+    static String selectLastMonthCosts() {
+        return "SELECT SUM(costs.value) AS value " +
+                "FROM costs " +
+                "INNER JOIN category " +
+                "ON costs.category_id=category.id " +
+                "INNER JOIN date " +
+                "ON costs.date_id=date.id " +
+                "WHERE MONTH(date)=MONTH(DATE_ADD(NOW(), INTERVAL -1 MONTH))" +
+                "AND " +
+                "YEAR(date)=YEAR(NOW());";
+    }
+
+
 
 // Дата и время
     @NotNull
@@ -72,10 +87,8 @@ public class CreateSQL {
                 "FROM costs " +
                 "INNER JOIN category " +
                 "ON costs.category_id=category.id " +
-                // New one
                 "INNER JOIN budget " +
                 "ON costs.category_id=budget.category_id " +
-                //
                 "INNER JOIN date " +
                 "ON costs.date_id=date.id " +
                 "WHERE MONTH(date)=MONTH(NOW()) " +
@@ -88,6 +101,14 @@ public class CreateSQL {
 //        INNER JOIN budget ON costs.category_id=budget.category_id
 //        INNER JOIN date ON costs.date_id=date.id
 //        WHERE MONTH(date)=MONTH(DATE_ADD(NOW(), INTERVAL -1 MONTH)) AND YEAR(date)=YEAR(NOW()) GROUP BY category;
+    }
+
+    static final String selectLastMonthByCategory() {
+        return "SELECT category.category, SUM(costs.value) AS value,  budget.amount FROM costs INNER JOIN category " +
+                "ON costs.category_id=category.id " +
+                "INNER JOIN budget ON costs.category_id=budget.category_id " +
+                "INNER JOIN date ON costs.date_id=date.id " +
+                "WHERE MONTH(date)=MONTH(DATE_ADD(NOW(), INTERVAL -1 MONTH)) AND YEAR(date)=YEAR(NOW()) GROUP BY category;";
     }
 
 
@@ -108,9 +129,22 @@ public class CreateSQL {
         return "INSERT INTO category(category) VALUES ('" + category + "');";
     }
 
+    // Выборка за месяц по одной категории, просуммированная по одинаковым комментам.
+    @NotNull
+    @Contract(pure = true)
+    static String selectMonthByCategory(String category) {
+        return "SELECT category.category, SUM(costs.value), costs.comment AS comment FROM costs " +
+        "INNER JOIN category ON costs.category_id = category.id " +
+        "INNER JOIN date ON costs.date_id = date.id " +
+        "WHERE MONTH (date) = MONTH(DATE_ADD(NOW(), INTERVAL - 1 MONTH)) " +
+        "AND YEAR (date) = YEAR(NOW()) " +
+        "AND category='" + category + "' " +
+        "GROUP BY comment " +
+        "ORDER BY value;";
+    }
 
 
-// Бюджет
+    // Бюджет
     @NotNull
     @Contract(pure = true)
     static final String selectOneMonthBudget() {
@@ -130,13 +164,25 @@ public class CreateSQL {
     @NotNull
     @Contract(pure = true)
     static String selectTotalBudgetThisMonth() {
-        return "SELECT SUM(amount) " + "" +
-                "FROM budget " +
-                "INNER JOIN date " + "" +
-                "ON budget.date_id=date.id " + "" +
-                "WHERE MONTH(date)=MONTH(NOW()) " + "" +
-                "AND " + "" +
-                "YEAR(date)=YEAR(NOW());";
+        // Это сейчас не работает, потому что бюджет не привязывается к месяцу. Он пока один и тот же на все месяцы
+//        return "SELECT SUM(amount) " + "" +
+//                "FROM budget " +
+//                "INNER JOIN date " + "" +
+//                "ON budget.date_id=date.id " + "" +
+//                "WHERE MONTH(date)=MONTH(NOW()) " + "" +
+//                "AND " + "" +
+//                "YEAR(date)=YEAR(NOW());";
+        // Здесь же выборка уже идет исходя из значений
+        return "SELECT SUM(amount) FROM budget";
+    }
+
+    @NotNull
+    @Contract(pure = true)
+    static final String insertOneCategory(int value, String comment, Categories category, LocalDate date) {
+        return "INSERT INTO budget(amount, comment, category_id, date_id) " +
+                "VALUES(" + value + ", " + comment + ", " +
+                "(SELECT id FROM category WHERE category = '" + category + "'), " +
+                "(SELECT id FROM date WHERE date = '" + date + "'));";
     }
 
 }

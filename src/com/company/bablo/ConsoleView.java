@@ -1,12 +1,8 @@
-package com.company;
-
-import com.sun.org.apache.regexp.internal.RE;
-import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
+package com.company.bablo;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.PrimitiveIterator;
 
 /**
  * Created by nik on 5/3/17.
@@ -22,6 +18,7 @@ public class ConsoleView {
         System.out.println("4. Создать бюджет на следующий месяц.");
         System.out.println("5. Удалить последнюю трату.");
         System.out.println("6. Выход из программы.");
+        System.out.println("7. Вывод всех трат за предыдущий месяц по категории");
     }
 
     public static void printSelectDate() {
@@ -93,24 +90,18 @@ public class ConsoleView {
     }
 
     // Вывод количества категорий
-    //
     static int getCountCategories(ResultSet resultSet) {
         int count = 0;
 
         try {
             while (resultSet.next()) {
                 count = resultSet.getInt(1);
-
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return count;
     }
-
-
-
-
 
     public static void printSelectLastCost(ResultSet resultSet) {
         int categoryLength;
@@ -160,10 +151,23 @@ public class ConsoleView {
 
     }
 
+    public static void printSelectMonthCostsInCategory(ResultSet resultSet) {
+        try {
+            while (resultSet.next()) {
+                System.out.print(resultSet.getString(1));
+                printTab(2);
+                System.out.print(resultSet.getString(2));
+                printTab(2);
+                System.out.print(resultSet.getString(3));
+                System.out.println();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
 
-
-    public static void printSelectCostsSummThisMonth(ResultSet resultSet) {
+    public static void printSelectCostsSumm(ResultSet resultSet) {
         System.out.println("------------------------------------------");
         try {
             if (resultSet.next()) {
@@ -191,18 +195,19 @@ public class ConsoleView {
         }
     }
 
-
     public static void printSelectThisMonth(ResultSet rsCategory) {
         try {
 
+
             System.out.println("Категория\t\t\tСумма\t\tБюджет" );
             System.out.println("------------------------------------------");
+
             while (rsCategory.next()) {
                 String category = rsCategory.getString(1);
                 String value = rsCategory.getString(2);
                 String amount = rsCategory.getString(3);
 
-                //Print with "\t" as indents independents on category or
+                 //Print with "\t" as indents independents on category or
                 System.out.print(category);
                 if (category.length() < 4)                      printTab(5);
                 else if (category.equals("transport"))          printTab(3);

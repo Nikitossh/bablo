@@ -1,4 +1,4 @@
-package com.company;
+package com.company.bablo;
 
 /**
  * Created by nik on 2/21/17.
@@ -10,7 +10,7 @@ public class DAO {
     private static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
     private static final String DB_URL = "jdbc:mysql://localhost/bablo";
     private static final String USER = "nik";
-    private static final String PASS = "senej92154";
+    private static final String PASS = "SimplePassword";
 
     // Создаем новый connection и возвращаем его
     static private Connection getDBConnection() {
@@ -66,13 +66,6 @@ public class DAO {
     }
 
 
-
-
-
-
-
-
-
     // Далее идет блок выполнения запросов полученных из класса CreateSQL
 
     // Все что связано с датой и временем
@@ -101,15 +94,23 @@ public class DAO {
     }
 
     // Получаем category, values, budget.amount
-    static ResultSet selectionThisMonth() {
+    public static ResultSet selectionThisMonth() {
         String sql = CreateSQL.selectThisMonth();
         ResultSet rs = executePreparedStatement(createPreparedStatement(sql));
         return rs;
     }
 
+
+    static ResultSet selectionLastMonthByCategory() {
+        String sql = CreateSQL.selectLastMonthByCategory();
+        ResultSet rs = executePreparedStatement(createPreparedStatement(sql));
+        return rs;
+    }
+
+
     // Сумма всех трат за текущий месяц
-    static ResultSet selectionTotalValuesThisMonth() {
-        String sql = CreateSQL.selectMonthCosts();
+    static ResultSet selectionTotalValuesThisMonth(int interval) {
+        String sql = CreateSQL.selectMonthTotalValueOfCosts(interval);
         ResultSet rs = executePreparedStatement(createPreparedStatement(sql));
         return rs;
     }
@@ -126,6 +127,13 @@ public class DAO {
     // Получение количества категорий. В ResultSet будет одно число!
     static ResultSet selectionCountCategories() {
         String sql = CreateSQL.selectCountCategories();
+        ResultSet rs = executePreparedStatement(createPreparedStatement(sql));
+        return rs;
+    }
+
+    // Получение всех трат за прыдущий месяц в указанной категории
+    static ResultSet selectionMonthCostsInCategory(String category) {
+        String sql = CreateSQL.selectMonthByCategory(category);
         ResultSet rs = executePreparedStatement(createPreparedStatement(sql));
         return rs;
     }

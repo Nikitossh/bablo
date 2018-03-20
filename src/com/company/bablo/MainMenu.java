@@ -1,11 +1,6 @@
-package com.company;
+package com.company.bablo;
 
 import java.io.IOException;
-import java.sql.ResultSet;
-import java.util.ArrayList;
-
-import static com.company.ConsoleView.getListCategories;
-import static com.company.CreateSQL.selectListCategories;
 
 /**
  * Created by nik on 4/18/17.

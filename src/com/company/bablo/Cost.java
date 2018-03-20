@@ -1,30 +1,40 @@
-package com.company;
+package com.company.bablo;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
 import java.sql.ResultSet;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
-import static com.company.ConsoleView.getListCategories;
-import static com.company.Inputs.inputString;
-
 /**
  * Created by nik on 4/12/17.
  */
+
+@Entity
 public class Cost {
+    @Id
     private static int value;
     private static String category;
     private static String comment;
     private static LocalDate date;
 
 
-    public static Cost createCost()  {
+    public static Cost createCost(String[] args)  {
         Cost cost = new Cost();
-        System.out.println(getDate() + " " + getValue() + " " + getCategory() + " " + getComment());
+        setDate(LocalDate.now());
+        setValue(Integer.parseInt(args[0]));
+        setCategory(args[1]);
+        setComment(args[2]);
+        return cost;
+    }
+
+    public static Cost createCost() {
+        Cost cost = new Cost();
         setDate(date);
         setValue(value);
-        setCategory(category);
         setComment(comment);
+        setCategory(category);
         return cost;
     }
 
@@ -55,7 +65,7 @@ public class Cost {
 
     static LocalDate inputDate() {
         System.out.println("Формат ввода даты в виде yyyy-MM-dd");
-        String date = inputString();
+        String date = Inputs.inputString();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate result = LocalDate.parse(date, formatter);
 
@@ -63,19 +73,44 @@ public class Cost {
 
     }
 
-
     // Получение списка всех категорий из БД.
     public static ArrayList<String> getCategoriesList() {
         ArrayList<String> resultList;
         ResultSet set = DAO.selectionCategoryList();
-        resultList = getListCategories(set);
+        resultList = ConsoleView.getListCategories(set);
         return resultList;
     }
 
 
-    static void checkCost() {
-        System.out.println("Выполняется проверка валидности введенных данных...");
+    // Проверяет нет ли пустых полей в переданных аргументах.
+    static boolean checkCost(String[] args) {
+        if(args[0] != null | args[1] != null | args[2] != null) {
+            System.out.println("Ну по крайней мере поля не пустые");
+            return true;
+        }
+        else
+            System.out.println("Не хватает данных для полноценного создания объекта!");
+        return false;
     }
+
+    @Override
+    public String toString() {
+        return "date: " + getDate() + "   " +
+                "category: " + getCategory() + "   " +
+                "value: " + getValue() + "   " +
+                "comment: " + getComment();
+    }
+
+    public static void main(String[] args) {
+        Cost cost = new Cost();
+        cost.setValue(100);
+        cost.setCategory("food");
+        cost.setComment("testComment");
+        cost.setDate(LocalDate.now());
+
+        System.out.println(cost);
+    }
+
 
     public static void printCost(Cost cost) {
         System.out.print(getDate().toString() + "  ");
