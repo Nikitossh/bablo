@@ -1,7 +1,5 @@
 package com.company.bablo;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
 import java.sql.ResultSet;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -11,9 +9,7 @@ import java.util.ArrayList;
  * Created by nik on 4/12/17.
  */
 
-@Entity
 public class Cost {
-    @Id
     private static int value;
     private static String category;
     private static String comment;

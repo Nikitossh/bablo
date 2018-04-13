@@ -2,8 +2,6 @@ package com.company.bablo;
 
 import java.time.LocalDate;
 
-import static com.company.bablo.Inputs.inputString;
-
 /**
  * Created by nik on 5/18/17.
  */

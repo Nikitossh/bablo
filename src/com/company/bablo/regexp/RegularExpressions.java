@@ -1,6 +1,7 @@
 package com.company.bablo.regexp;
-import java.util.Map;
-import java.util.regex.*;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * This class for working with regular expressions.
