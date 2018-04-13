@@ -77,7 +77,7 @@ public class ConsoleView {
 
     // Вывод в консоль списка категорий.
     //
-    static ArrayList<String> getListCategories(ResultSet resultSet) {
+    public static ArrayList<String> getListCategories(ResultSet resultSet) {
         ArrayList<String> listCategories = new ArrayList<>();
         try {
             while (resultSet.next()) {
@@ -90,7 +90,7 @@ public class ConsoleView {
     }
 
     // Вывод количества категорий
-    static int getCountCategories(ResultSet resultSet) {
+    public static int getCountCategories(ResultSet resultSet) {
         int count = 0;
 
         try {

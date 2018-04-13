@@ -1,4 +1,7 @@
-package com.company.bablo;
+package com.company.bablo.entity;
+
+import com.company.bablo.ConsoleView;
+import com.company.bablo.persistent.DAO;
 
 import java.sql.ResultSet;
 import java.util.ArrayList;
@@ -10,6 +13,15 @@ import java.util.Map;
  * и на основе ответа заполняет список.
  */
 public class Categories {
+
+    // Получение списка всех категорий из БД.
+    public static ArrayList<String> getCategoriesList() {
+        ArrayList<String> resultList;
+        ResultSet set = DAO.selectionCategoryList();
+        resultList = ConsoleView.getListCategories(set);
+        return resultList;
+    }
+
     static Map<Integer, String> categories;
 
     public static void  main(String[] args) {

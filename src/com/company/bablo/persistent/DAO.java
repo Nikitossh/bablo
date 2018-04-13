@@ -1,8 +1,11 @@
-package com.company.bablo;
+package com.company.bablo.persistent;
 
 /**
  * Created by nik on 2/21/17.
  */
+
+import com.company.bablo.entity.Budget;
+import com.company.bablo.entity.Cost;
 
 import java.sql.*;
 
@@ -70,24 +73,24 @@ public class DAO {
 
     // Все что связано с датой и временем
     // Добавление даты
-    static int insertionData(Cost cost) {
+    public static int insertionData(Cost cost) {
         return executePreparedUpdate(createPreparedStatement(CreateSQL.insertNewDate(cost)));
     }
 
     // Все что связано с тратами
     // Добавляем запись.
-    static int insertionCost(Cost cost) {
+    public static int insertionCost(Cost cost) {
        return executePreparedUpdate(createPreparedStatement(CreateSQL.insertNewCost(cost)));
     }
 
     // Удаление последней записи по ID
-    static int deletionCost() {
+    public static int deletionCost() {
         return executePreparedUpdate(createPreparedStatement(CreateSQL.deleteLastCost()));
     }
 
     // Выборка последних пяти трат
     // Для другого количества меняем limit
-    static ResultSet selectionLastCosts(int limit) {
+    public static ResultSet selectionLastCosts(int limit) {
         String sql = CreateSQL.selectLastCost(limit);
         ResultSet rs = executePreparedStatement(createPreparedStatement(sql));
         return rs;
@@ -101,7 +104,7 @@ public class DAO {
     }
 
 
-    static ResultSet selectionLastMonthByCategory() {
+    public static ResultSet selectionLastMonthByCategory() {
         String sql = CreateSQL.selectLastMonthByCategory();
         ResultSet rs = executePreparedStatement(createPreparedStatement(sql));
         return rs;
@@ -109,7 +112,7 @@ public class DAO {
 
 
     // Сумма всех трат за текущий месяц
-    static ResultSet selectionTotalValuesThisMonth(int interval) {
+    public static ResultSet selectionTotalValuesThisMonth(int interval) {
         String sql = CreateSQL.selectMonthTotalValueOfCosts(interval);
         ResultSet rs = executePreparedStatement(createPreparedStatement(sql));
         return rs;
@@ -118,21 +121,21 @@ public class DAO {
 
 // Все что связано с категориями
     // Получение списка категорий
-    static ResultSet selectionCategoryList() {
+    public static ResultSet selectionCategoryList() {
         String sql = CreateSQL.selectListCategories();
         ResultSet rs = executePreparedStatement(createPreparedStatement(sql));
         return rs;
     }
 
     // Получение количества категорий. В ResultSet будет одно число!
-    static ResultSet selectionCountCategories() {
+    public static ResultSet selectionCountCategories() {
         String sql = CreateSQL.selectCountCategories();
         ResultSet rs = executePreparedStatement(createPreparedStatement(sql));
         return rs;
     }
 
     // Получение всех трат за прыдущий месяц в указанной категории
-    static ResultSet selectionMonthCostsInCategory(String category) {
+    public static ResultSet selectionMonthCostsInCategory(String category) {
         String sql = CreateSQL.selectMonthByCategory(category);
         ResultSet rs = executePreparedStatement(createPreparedStatement(sql));
         return rs;
@@ -142,13 +145,13 @@ public class DAO {
 
     // Все что связано с бюджетом
     // Общая сумма бюджета на текущий месяц
-    static ResultSet selectionTotalBudgetThisMonth() {
+    public static ResultSet selectionTotalBudgetThisMonth() {
         String sql = CreateSQL.selectTotalBudgetThisMonth();
         ResultSet rs = executePreparedStatement(createPreparedStatement(sql));
         return rs;
     }
 
-    static int insertionBudget(Budget budget) {
+    public static int insertionBudget(Budget budget) {
         String sql = CreateSQL.insertBudgetCategory(budget);
         return executePreparedUpdate(createPreparedStatement(sql));
     }

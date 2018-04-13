@@ -1,4 +1,4 @@
-package com.company.bablo;
+package com.company.bablo.entity;
 
 import java.time.LocalDate;
 

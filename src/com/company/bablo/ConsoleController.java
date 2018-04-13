@@ -1,8 +1,16 @@
 package com.company.bablo;
 
+import com.company.bablo.entity.Cost;
+import com.company.bablo.persistent.DAO;
+import com.company.bablo.util.Inputs;
+
+import java.time.LocalDate;
+
+import static com.company.bablo.ConsoleAux.selectDate;
 import static com.company.bablo.ConsoleView.printSelectMonthCostsInCategory;
-import static com.company.bablo.Cost.*;
-import static com.company.bablo.DAO.selectionLastMonthByCategory;
+import static com.company.bablo.entity.Categories.getCategoriesList;
+import static com.company.bablo.entity.Cost.*;
+import static com.company.bablo.persistent.DAO.selectionLastMonthByCategory;
 
 /**
  * Created by nik on 5/3/17.
@@ -18,30 +26,26 @@ public class ConsoleController implements Runnable{
     public static void selectMainMenu() {
         int selector = Inputs.inputInt();
 
-        Cost cost = new Cost();
         assert (selector > 0) : "Вы выбрали значение меньше нуля!";
         switch (selector) {
             case 1:
                 // Здесь вся логика работы программы при работе из консоли
                 // Для начала запросим у пользовтеля данные для создания платежа.
                 ConsoleView.printSelectDate();
-                setDate(selectDate(Inputs.inputInt()));
+                LocalDate date =  selectDate(Inputs.inputInt());
                 // Запрашиваем ввод суммы
                 ConsoleView.printWriteValue();
-                setValue(Inputs.inputInt());
+                int value = Inputs.inputInt();
                 // Запрашиваем категорию.
                 ConsoleView.printSelectCategory();
                 ConsoleView.printListCategories(getCategoriesList());
-                setCategory(Inputs.inputString());
+                String category = Inputs.inputString();
                 // Запрашиваем комментарий
                 ConsoleView.printWriteComment();
-                setComment(Inputs.inputString());
+                String comment = Inputs.inputString();
 
                 System.out.println("Все поля заполнены, проверяем их на валидность...");
-                try {
-                    cost =  createCost(); } catch (Exception e) {
-                    System.out.print("Ошибка при создании cost!");
-                }
+                Cost cost =  new Cost(value, category, comment, date);
 
                 System.out.println("Создана сущность:");
                 printCost(cost);

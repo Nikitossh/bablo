@@ -1,11 +1,6 @@
-package com.company.bablo;
+package com.company.bablo.entity;
 
-import com.company.bablo.util.Inputs;
-
-import java.sql.ResultSet;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 
 /**
  * Created by nik on 4/12/17.
@@ -33,51 +28,8 @@ public class Cost {
         this.date = date;
     }
 
-    public static LocalDate selectDate(int selector) {
-        LocalDate today = LocalDate.now();
-        LocalDate result;
-
-        //System.out.println("Выберите дату:");
-        switch (selector) {
-            case 1 :
-                result = today.minusDays(2);
-                break;
-            case 2 :
-                result = today.minusDays(1);
-                break;
-            case 3 :
-                result = inputDate();
-                break;
-            default :
-                result = today;
-                break;
-        }
-
-        System.out.println("Выбрана дата:");
-        System.out.println(result);
-        return result;
-    }
-
-    static LocalDate inputDate() {
-        System.out.println("Формат ввода даты в виде yyyy-MM-dd");
-        String date = Inputs.inputString();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        LocalDate result = LocalDate.parse(date, formatter);
-
-        return result;
-
-    }
-
-    // Получение списка всех категорий из БД.
-    public static ArrayList<String> getCategoriesList() {
-        ArrayList<String> resultList;
-        ResultSet set = DAO.selectionCategoryList();
-        resultList = ConsoleView.getListCategories(set);
-        return resultList;
-    }
-
-    // Проверяет нет ли пустых полей в переданных аргументах.
-    static boolean checkCost(String[] args) {
+    /** Check if some values are NULL */
+    public static boolean checkCost(String[] args) {
         if(args[0] != null | args[1] != null | args[2] != null) {
             System.out.println("Ну по крайней мере поля не пустые");
             return true;
@@ -100,7 +52,6 @@ public class Cost {
         System.out.print(cost.getValue() + "  ");
         System.out.print(cost.getCategory() + "  ");
         System.out.print(cost.getComment() + "  ");
-
     }
 
     public  void setValue(int value) {

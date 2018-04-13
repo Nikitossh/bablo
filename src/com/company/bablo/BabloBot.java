@@ -4,24 +4,19 @@ package com.company.bablo;
  * Created by nik on 4/24/17.
  */
 
+import com.company.bablo.entity.Cost;
+import com.company.bablo.persistent.DAO;
 import com.company.bablo.regexp.RegularExpressions;
 import org.telegram.telegrambots.ApiContextInitializer;
 import org.telegram.telegrambots.TelegramBotsApi;
 import org.telegram.telegrambots.api.methods.send.SendMessage;
 import org.telegram.telegrambots.api.objects.Message;
 import org.telegram.telegrambots.api.objects.Update;
-import org.telegram.telegrambots.api.objects.replykeyboard.InlineKeyboardMarkup;
-import org.telegram.telegrambots.api.objects.replykeyboard.ReplyKeyboardMarkup;
-import org.telegram.telegrambots.api.objects.replykeyboard.buttons.KeyboardRow;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.exceptions.TelegramApiException;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-
-import static com.company.bablo.Cost.getCategoriesList;
 
 
 public class BabloBot extends TelegramLongPollingBot {
@@ -72,7 +67,7 @@ public class BabloBot extends TelegramLongPollingBot {
             System.out.println("Регулярка разбита на части и они переданы на проверку");
             System.out.print("value: " + costFields[0] + "  category: " + costFields[1] + "  comment: " + costFields[2]);
             Cost.checkCost(costFields);
-            Cost cost = Cost.createCost(costFields);
+            Cost cost = new Cost(costFields);
             // Добавляем дату, если не добавить, то будет NULL в БД
             DAO.insertionData(cost);
             System.out.println(cost);

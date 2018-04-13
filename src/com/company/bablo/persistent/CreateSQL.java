@@ -1,4 +1,8 @@
-package com.company.bablo;
+package com.company.bablo.persistent;
+
+import com.company.bablo.entity.Budget;
+import com.company.bablo.entity.Categories;
+import com.company.bablo.entity.Cost;
 
 import java.time.LocalDate;
 
