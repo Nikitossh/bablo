@@ -1,9 +1,5 @@
 package com.company.bablo;
 
-
-import org.jetbrains.annotations.Contract;
-import org.jetbrains.annotations.NotNull;
-
 import java.time.LocalDate;
 
 /**
@@ -13,7 +9,7 @@ import java.time.LocalDate;
 public class CreateSQL {
 
 // Трата
-    @NotNull
+
     static String insertNewCost(Cost cost) {
         return "INSERT INTO bablo.costs" +
                 "(value, comment, date_id, category_id) " +
@@ -24,15 +20,11 @@ public class CreateSQL {
                 "(SELECT id FROM category WHERE category=" + "'" + cost.getCategory() + "'" + "));";
     }
 
-    @NotNull
-    @Contract(pure = true)
     static String deleteLastCost() {
         return "DELETE FROM costs ORDER BY id DESC LIMIT 1;";
     }
 
 
-    @NotNull
-    @Contract(pure = true)
     static String selectLastCost(int limit) {
         return "SELECT costs.id, category.category, costs.value, costs.comment, date.date " +
                 "FROM costs " +
@@ -44,8 +36,6 @@ public class CreateSQL {
                 "LIMIT " + limit + ";";
     }
 
-    @NotNull
-    @Contract(pure = true)
     static String selectMonthTotalValueOfCosts(int interval) {
         return "SELECT SUM(costs.value) AS value " +
                 "FROM costs " +
@@ -73,15 +63,12 @@ public class CreateSQL {
 
 
 // Дата и время
-    @NotNull
     static String insertNewDate(Cost cost) {
     String date = "'" + Cost.getDate().toString() + "'";
 
         return "INSERT IGNORE INTO date(date) VALUES (" + date + ");";
     }
 
-    @NotNull
-    @Contract(pure = true)
     static String selectThisMonth() {
         return "SELECT category.category, SUM(costs.value) AS value,  budget.amount " +
                 "FROM costs " +
@@ -113,25 +100,18 @@ public class CreateSQL {
 
 
 // Категории
-    @NotNull
-    @Contract(pure = true)
     static String selectListCategories() {
         return "SELECT category FROM category;";
     }
 
-    @NotNull
-    @Contract(pure = true)
     static String selectCountCategories() {return "SELECT COUNT(category) FROM category;";}
 
-    @NotNull
-    @Contract(pure = true)
     static String insertNewCategory(String category) {
         return "INSERT INTO category(category) VALUES ('" + category + "');";
     }
 
     // Выборка за месяц по одной категории, просуммированная по одинаковым комментам.
-    @NotNull
-    @Contract(pure = true)
+
     static String selectMonthByCategory(String category) {
         return "SELECT category.category, SUM(costs.value), costs.comment AS comment FROM costs " +
         "INNER JOIN category ON costs.category_id = category.id " +
@@ -143,17 +123,12 @@ public class CreateSQL {
         "ORDER BY value;";
     }
 
-
     // Бюджет
-    @NotNull
-    @Contract(pure = true)
     static final String selectOneMonthBudget() {
         return "SELECT category.category, budget.amount, comment FROM budget NATURAL JOIN category ON category_id";
     }
 
 
-
-    @NotNull
     static final String insertBudgetCategory(Budget budget) {
         return "INSERT INTO budget (amount, comment, date_id, category_id)"
                 + "VALUES (" + budget.getAmount() +", " + budget.getComment() + ", "
@@ -161,8 +136,6 @@ public class CreateSQL {
                 + "(SELECT id FROM category WHERE category=" + "'" + budget.getCategory() + "'" + "));";
     }
 
-    @NotNull
-    @Contract(pure = true)
     static String selectTotalBudgetThisMonth() {
         // Это сейчас не работает, потому что бюджет не привязывается к месяцу. Он пока один и тот же на все месяцы
 //        return "SELECT SUM(amount) " + "" +
@@ -176,8 +149,6 @@ public class CreateSQL {
         return "SELECT SUM(amount) FROM budget";
     }
 
-    @NotNull
-    @Contract(pure = true)
     static final String insertOneCategory(int value, String comment, Categories category, LocalDate date) {
         return "INSERT INTO budget(amount, comment, category_id, date_id) " +
                 "VALUES(" + value + ", " + comment + ", " +
