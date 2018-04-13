@@ -64,7 +64,7 @@ public class CreateSQL {
 
 // Дата и время
     static String insertNewDate(Cost cost) {
-    String date = "'" + Cost.getDate().toString() + "'";
+    String date = "'" + cost.getDate().toString() + "'";
 
         return "INSERT IGNORE INTO date(date) VALUES (" + date + ");";
     }

@@ -1,5 +1,7 @@
 package com.company.bablo;
 
+import com.company.bablo.util.Inputs;
+
 import java.sql.ResultSet;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -7,31 +9,28 @@ import java.util.ArrayList;
 
 /**
  * Created by nik on 4/12/17.
+ * Modified 13/04/18
  */
 
 public class Cost {
-    private static int value;
-    private static String category;
-    private static String comment;
-    private static LocalDate date;
+    private int value;
+    private String category;
+    private String comment;
+    private LocalDate date;
 
-
-    public static Cost createCost(String[] args)  {
-        Cost cost = new Cost();
-        setDate(LocalDate.now());
-        setValue(Integer.parseInt(args[0]));
-        setCategory(args[1]);
-        setComment(args[2]);
-        return cost;
+    /** This constructor for creating with regexp/RegularExpression  */
+    public Cost(String fields[]) {
+        this.value = Integer.parseInt(fields[0]);
+        this.category = fields[1];
+        this.comment = fields[2];
+        this.date = LocalDate.now();
     }
 
-    public static Cost createCost() {
-        Cost cost = new Cost();
-        setDate(date);
-        setValue(value);
-        setComment(comment);
-        setCategory(category);
-        return cost;
+    public Cost(int value, String category, String comment, LocalDate date) {
+        this.value = value;
+        this.category = category;
+        this.comment = comment;
+        this.date = date;
     }
 
     public static LocalDate selectDate(int selector) {
@@ -77,7 +76,6 @@ public class Cost {
         return resultList;
     }
 
-
     // Проверяет нет ли пустых полей в переданных аргументах.
     static boolean checkCost(String[] args) {
         if(args[0] != null | args[1] != null | args[2] != null) {
@@ -97,55 +95,44 @@ public class Cost {
                 "comment: " + getComment();
     }
 
-    public static void main(String[] args) {
-        Cost cost = new Cost();
-        cost.setValue(100);
-        cost.setCategory("food");
-        cost.setComment("testComment");
-        cost.setDate(LocalDate.now());
-
-        System.out.println(cost);
-    }
-
-
     public static void printCost(Cost cost) {
-        System.out.print(getDate().toString() + "  ");
-        System.out.print(getValue() + "  ");
-        System.out.print(getCategory() + "  ");
-        System.out.print(getComment() + "  ");
+        System.out.print(cost.getDate().toString() + "  ");
+        System.out.print(cost.getValue() + "  ");
+        System.out.print(cost.getCategory() + "  ");
+        System.out.print(cost.getComment() + "  ");
 
     }
 
-    public static void setValue(int value) {
-        Cost.value = value;
+    public  void setValue(int value) {
+        this.value = value;
     }
 
-    public static int getValue() {
+    public  int getValue() {
         return value;
     }
 
-    public static String getCategory() {
+    public  String getCategory() {
         return category;
     }
 
-    public static void setCategory(String category) {
-        Cost.category = category;
+    public  void setCategory(String category) {
+        this.category = category;
     }
 
-    public static String getComment() {
+    public  String getComment() {
         return comment;
     }
 
-    public static void setComment(String comment) {
-        Cost.comment = comment;
+    public  void setComment(String comment) {
+        this.comment = comment;
     }
 
-    public  static LocalDate getDate() {
+    public   LocalDate getDate() {
         return date;
     }
 
-    public static void setDate(LocalDate date) {
-        Cost.date = date;
+    public  void setDate(LocalDate date) {
+        this.date = date;
     }
 
 
