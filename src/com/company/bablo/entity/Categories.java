@@ -1,32 +1,40 @@
 package com.company.bablo.entity;
 
+import com.company.bablo.persistent.DAO;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
-
-import static com.company.bablo.persistent.DAO.getCategoriesRS;
 
 /**
  * Created by nik on 6/2/17.
  * При создании экземпляра класса, создается список Map, конструктор которого опрашивает БД
  * и на основе ответа заполняет список.
  */
+
 public class Categories {
     private Map<Integer, String> map;
+    ResultSet rs = DAO.getCategoriesRS();
 
-    public Categories() throws SQLException {
-        ResultSet rs = getCategoriesRS();
-        System.out.println(rs);
+    public Categories(Map<Integer, String> map) throws SQLException{
+        getCategoriesMap(rs);
+        this.map = map;
+    }
+
+
+    /** Get categories Map */
+    public Map<Integer, String> getCategoriesMap(ResultSet rs) throws SQLException {
         while (rs.next()) {
             System.out.println(rs.getInt(1) + "  " + rs.getString(2));
             map.put(rs.getInt(1), rs.getString(2));
         }
-        System.out.println(map);
+
+        return this.map;
     }
 
-    // Вывод в консоль списка категорий.
-    //
+    /** Get categories List */
     public static ArrayList<String> getListCategories(ResultSet resultSet) {
         ArrayList<String> listCategories = new ArrayList<>();
         try {
@@ -39,7 +47,7 @@ public class Categories {
         return listCategories;
     }
 
-    // Вывод количества категорий
+    /** Get categories count */
     public static int getCountCategories(ResultSet resultSet) {
         int count = 0;
 
@@ -56,13 +64,14 @@ public class Categories {
 
 
     public static void main(String[] args) {
+        Map<Integer, String> map = new HashMap<>();
         Categories categories = null;
         try {
-            categories = new Categories();
+            categories = new Categories(map);
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            System.out.println(categories);
+            System.out.println(categories.map);
         }
     }
 
