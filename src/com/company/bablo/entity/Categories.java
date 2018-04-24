@@ -1,11 +1,11 @@
 package com.company.bablo.entity;
 
-import com.company.bablo.ConsoleView;
-import com.company.bablo.persistent.DAO;
-
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Map;
+
+import static com.company.bablo.persistent.DAO.getCategoriesRS;
 
 /**
  * Created by nik on 6/2/17.
@@ -13,43 +13,57 @@ import java.util.Map;
  * и на основе ответа заполняет список.
  */
 public class Categories {
+    private Map<Integer, String> map;
 
-    // Получение списка всех категорий из БД.
-    public static ArrayList<String> getCategoriesList() {
-        ArrayList<String> resultList;
-        ResultSet set = DAO.selectionCategoryList();
-        resultList = ConsoleView.getListCategories(set);
-        return resultList;
+    public Categories() throws SQLException {
+        ResultSet rs = getCategoriesRS();
+        System.out.println(rs);
+        while (rs.next()) {
+            System.out.println(rs.getInt(1) + "  " + rs.getString(2));
+            map.put(rs.getInt(1), rs.getString(2));
+        }
+        System.out.println(map);
     }
 
-    static Map<Integer, String> categories;
+    // Вывод в консоль списка категорий.
+    //
+    public static ArrayList<String> getListCategories(ResultSet resultSet) {
+        ArrayList<String> listCategories = new ArrayList<>();
+        try {
+            while (resultSet.next()) {
+                listCategories.add(resultSet.getString(2));
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return listCategories;
+    }
 
-    public static void  main(String[] args) {
+    // Вывод количества категорий
+    public static int getCountCategories(ResultSet resultSet) {
         int count = 0;
-        ArrayList categoryArrayList = new ArrayList();
-        // Шаг 1. Получаем ResultSet списка категорий и количество категорий в списке
-        ResultSet categoryList = DAO.selectionCategoryList();
-        ResultSet countCategories = DAO.selectionCountCategories();
-        // Шаг 2. Получаем значения из ResultSet
-        count = ConsoleView.getCountCategories(countCategories);
-        categoryArrayList = ConsoleView.getListCategories(categoryList);
 
-        // Заполняем Map
-
-        for (int i = 0; i < count; i++) {
-            System.out.println(categoryArrayList.get(i));
-            categories.put(i, (String) categoryArrayList.get(i));
+        try {
+            while (resultSet.next()) {
+                count = resultSet.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-        System.out.println("Создан!");
-        System.out.println("Вводим:");
-
-
-        for(Map.Entry entry : categories.entrySet()) {
-            System.out.println("Key: " + entry.getKey() + "Value: " + entry.getValue());
-        }
-
-
+        return count;
     }
 
+
+
+    public static void main(String[] args) {
+        Categories categories = null;
+        try {
+            categories = new Categories();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            System.out.println(categories);
+        }
+    }
 
 }

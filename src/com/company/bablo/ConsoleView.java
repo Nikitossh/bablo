@@ -73,36 +73,6 @@ public class ConsoleView {
         System.out.println("Текущие траты за этот месяц:");
     }
 
-
-
-    // Вывод в консоль списка категорий.
-    //
-    public static ArrayList<String> getListCategories(ResultSet resultSet) {
-        ArrayList<String> listCategories = new ArrayList<>();
-        try {
-            while (resultSet.next()) {
-                listCategories.add(resultSet.getString(1));
-            }
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-        }
-        return listCategories;
-    }
-
-    // Вывод количества категорий
-    public static int getCountCategories(ResultSet resultSet) {
-        int count = 0;
-
-        try {
-            while (resultSet.next()) {
-                count = resultSet.getInt(1);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return count;
-    }
-
     public static void printSelectLastCost(ResultSet resultSet) {
         int categoryLength;
         int valueLength;

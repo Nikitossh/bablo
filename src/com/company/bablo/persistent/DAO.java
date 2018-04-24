@@ -16,7 +16,7 @@ public class DAO {
     private static final String PASS = "SimplePassword";
 
     // Создаем новый connection и возвращаем его
-    static private Connection getDBConnection() {
+    private static Connection getDBConnection() {
         Connection connection = null;
 
         try {
@@ -43,15 +43,12 @@ public class DAO {
     }
 
     // Выполняет созданный SELECT в БД и возвращает ResultSet
-    static private ResultSet executePreparedStatement(PreparedStatement preparedStatement) {
+    protected static ResultSet executePreparedStatement(PreparedStatement preparedStatement) {
         ResultSet resultSet = null;
         try {
             resultSet = preparedStatement.executeQuery();
         } catch (SQLException ex) {
             ex.printStackTrace();
-        } finally {
-            //finally block used to close resources
-            //closeRSandStmt(resultSet, preparedStatement);
         }
         return resultSet;
     }
@@ -110,6 +107,18 @@ public class DAO {
         return rs;
     }
 
+/** Это блок предназначенный для замены этого спаггети */
+    public static PreparedStatement createPS(String sql) {
+        PreparedStatement ps = createPreparedStatement(sql);
+        return ps;
+    }
+
+    public static ResultSet selection(PreparedStatement ps) {
+        ResultSet rs = executePreparedStatement(ps);
+        return rs;
+    }
+/** конец блока */
+
 
     // Сумма всех трат за текущий месяц
     public static ResultSet selectionTotalValuesThisMonth(int interval) {
@@ -121,14 +130,14 @@ public class DAO {
 
 // Все что связано с категориями
     // Получение списка категорий
-    public static ResultSet selectionCategoryList() {
+    public static ResultSet getCategoriesRS() {
         String sql = CreateSQL.selectListCategories();
         ResultSet rs = executePreparedStatement(createPreparedStatement(sql));
         return rs;
     }
 
     // Получение количества категорий. В ResultSet будет одно число!
-    public static ResultSet selectionCountCategories() {
+    public static ResultSet getCategoriesCountRS() {
         String sql = CreateSQL.selectCountCategories();
         ResultSet rs = executePreparedStatement(createPreparedStatement(sql));
         return rs;

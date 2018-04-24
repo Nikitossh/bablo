@@ -39,6 +39,27 @@ public class Cost {
         return false;
     }
 
+    public static void main(String[] args) {
+        Cost cost = new Cost(100, "food", "test tetst 'tesdt", LocalDate.now());
+        System.out.println(checkCost(cost));
+    }
+
+    public static boolean checkCost(Cost cost) {
+        /* Вытягиваем поля из объекта для проверок */
+        int value = cost.getValue();
+        String category = cost.getCategory();
+        String comment = cost.getComment();
+        LocalDate date = cost.getDate();
+
+        /* Проверка поля comment на наличие символа ' который ломает строку запроса, если данный символ содержится,
+         * то он должен экранироваться */
+        if (comment.contains("'")) {
+            System.out.println("alarm!");
+        }
+
+        return false;
+    }
+
     @Override
     public String toString() {
         return "date: " + getDate() + "   " +

@@ -1,10 +1,8 @@
 package com.company.bablo.persistent;
 
 import com.company.bablo.entity.Budget;
-import com.company.bablo.entity.Categories;
 import com.company.bablo.entity.Cost;
-
-import java.time.LocalDate;
+// TODO: Символ ' ломает строку запроса. При его наличии необходимо его экранировать.
 
 /**
  * Created by nik on 4/17/17.
@@ -12,9 +10,8 @@ import java.time.LocalDate;
  */
 public class CreateSQL {
 
-// Трата
-
-    static String insertNewCost(Cost cost) {
+// Cost
+    static final String insertNewCost(Cost cost) {
         return "INSERT INTO bablo.costs" +
                 "(value, comment, date_id, category_id) " +
                 "VALUES (" +
@@ -105,7 +102,7 @@ public class CreateSQL {
 
 // Категории
     static String selectListCategories() {
-        return "SELECT category FROM category;";
+        return "SELECT id, category FROM category ORDER BY category;";
     }
 
     static String selectCountCategories() {return "SELECT COUNT(category) FROM category;";}
@@ -152,12 +149,4 @@ public class CreateSQL {
         // Здесь же выборка уже идет исходя из значений
         return "SELECT SUM(amount) FROM budget";
     }
-
-    static final String insertOneCategory(int value, String comment, Categories category, LocalDate date) {
-        return "INSERT INTO budget(amount, comment, category_id, date_id) " +
-                "VALUES(" + value + ", " + comment + ", " +
-                "(SELECT id FROM category WHERE category = '" + category + "'), " +
-                "(SELECT id FROM date WHERE date = '" + date + "'));";
-    }
-
 }

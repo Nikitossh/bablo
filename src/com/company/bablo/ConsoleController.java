@@ -7,9 +7,10 @@ import com.company.bablo.util.Inputs;
 import java.time.LocalDate;
 
 import static com.company.bablo.ConsoleAux.selectDate;
+import static com.company.bablo.entity.Categories.getListCategories;
 import static com.company.bablo.ConsoleView.printSelectMonthCostsInCategory;
-import static com.company.bablo.entity.Categories.getCategoriesList;
 import static com.company.bablo.entity.Cost.*;
+import static com.company.bablo.persistent.DAO.getCategoriesRS;
 import static com.company.bablo.persistent.DAO.selectionLastMonthByCategory;
 
 /**
@@ -38,7 +39,7 @@ public class ConsoleController implements Runnable{
                 int value = Inputs.inputInt();
                 // Запрашиваем категорию.
                 ConsoleView.printSelectCategory();
-                ConsoleView.printListCategories(getCategoriesList());
+                ConsoleView.printListCategories(getListCategories(getCategoriesRS()));
                 String category = Inputs.inputString();
                 // Запрашиваем комментарий
                 ConsoleView.printWriteComment();
