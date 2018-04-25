@@ -1,5 +1,7 @@
 package com.company.bablo.regexp;
 
+import com.company.bablo.entity.Categories;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -13,11 +15,8 @@ import java.util.regex.Pattern;
  */
 
 public class RegularExpressions {
-    // Пользуюсь данной переменной временно, надо будет делать строку выдергивая список категорий из БД и преобразуя
-    //TODO: Сделать в классе DAO.Categories преобразование всех категорий из БД в строку для регулярного выражения.
-    // в строку вида category1|category2|... для регулярки
-    private String categories = "(alcohol|car|communication|face|family|flat|food|health|other|sport|transport)";
-    private final String patternString = "^([0-9]{1,9})(\\s+)" + categories + "(((\\s+)?(\\w+)?){1,30})?$";
+    private Categories c = new Categories();
+    private final String patternString = "^([0-9]{1,9})(\\s+)" + c + "(((\\s+)?(\\w+)?){1,30})?$";
     private final Pattern pattern = Pattern.compile(patternString);
 
     public boolean isMatch(String messageText) {
@@ -42,5 +41,10 @@ public class RegularExpressions {
         System.out.println(matcher.group(5));
 
         return result;
+    }
+
+    public static void main(String[] args) {
+        RegularExpressions regularExpressions = new RegularExpressions();
+        System.out.println(regularExpressions.c);
     }
 }

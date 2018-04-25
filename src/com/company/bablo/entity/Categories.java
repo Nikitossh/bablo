@@ -29,7 +29,7 @@ public class Categories {
     /** Get categories Map */
     public Map<Integer, String> getCategoriesMap(ResultSet rs, Map<Integer, String> map) throws SQLException {
         while (rs.next()) {
-            System.out.println(rs.getInt(1) + "  " + rs.getString(2));
+            //System.out.println(rs.getInt(1) + "  " + rs.getString(2));
             map.put(rs.getInt(1), rs.getString(2));
         }
         return map;
