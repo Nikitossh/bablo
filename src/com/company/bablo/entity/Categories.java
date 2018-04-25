@@ -16,11 +16,14 @@ import java.util.Map;
  */
 
 public class Categories {
-    private Map<Integer, String> map;
+    private Map<Integer, String> map = new HashMap<>();
 
-    public Categories(Map<Integer, String> map) throws SQLException{
-        getCategoriesMap(DAO.getCategoriesRS(), map);
-        this.map = map;
+    public Categories(){
+        try {
+            getCategoriesMap(DAO.getCategoriesRS(), map);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     /** Get categories Map */
@@ -62,14 +65,8 @@ public class Categories {
 
     /** Testing class */
     public static void main(String[] args) {
-        HashMap<Integer, String> amp = new HashMap<>();
-
-        try {
-            Categories categories = new Categories(amp);
-            System.out.println(categories);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        Categories categories = new Categories();
+        System.out.println(categories);
     }
 
 }
