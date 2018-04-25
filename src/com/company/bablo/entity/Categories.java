@@ -45,21 +45,6 @@ public class Categories {
         return listCategories;
     }
 
-    /** Get categories count */
-    public static int getCountCategories(ResultSet resultSet) {
-        int count = 0;
-
-        try {
-            while (resultSet.next()) {
-                count = resultSet.getInt(1);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return count;
-    }
-
-
      /** create String like: "cat1|cat2|catN..."
      * It's useful for RegularExpression using in TelegramBot */
     @Override
