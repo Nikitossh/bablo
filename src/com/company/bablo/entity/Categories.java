@@ -10,28 +10,26 @@ import java.util.Map;
 
 /**
  * Created by nik on 6/2/17.
+ * Creating
  * При создании экземпляра класса, создается список Map, конструктор которого опрашивает БД
  * и на основе ответа заполняет список.
  */
 
 public class Categories {
     private Map<Integer, String> map;
-    ResultSet rs = DAO.getCategoriesRS();
 
     public Categories(Map<Integer, String> map) throws SQLException{
-        getCategoriesMap(rs);
+        getCategoriesMap(DAO.getCategoriesRS(), map);
         this.map = map;
     }
 
-
     /** Get categories Map */
-    public Map<Integer, String> getCategoriesMap(ResultSet rs) throws SQLException {
+    public Map<Integer, String> getCategoriesMap(ResultSet rs, Map<Integer, String> map) throws SQLException {
         while (rs.next()) {
             System.out.println(rs.getInt(1) + "  " + rs.getString(2));
             map.put(rs.getInt(1), rs.getString(2));
         }
-
-        return this.map;
+        return map;
     }
 
     /** Get categories List */
@@ -62,16 +60,30 @@ public class Categories {
     }
 
 
+     /** create String like: "cat1|cat2|catN..."
+     * It's useful for RegularExpression using in TelegramBot */
+    @Override
+    public String toString() {
+        String result = "";
+        for (Map.Entry<Integer, String> entry : map.entrySet()) {
+            result += entry.getValue() + "|";
+        }
+        /** remove last "|" */
+        if (result.endsWith("|")) {
+            result = result.substring(0, result.length()-1);
+        }
+        return result;
+    }
 
+    /** Testing class */
     public static void main(String[] args) {
-        Map<Integer, String> map = new HashMap<>();
-        Categories categories = null;
+        HashMap<Integer, String> amp = new HashMap<>();
+
         try {
-            categories = new Categories(map);
+            Categories categories = new Categories(amp);
+            System.out.println(categories);
         } catch (SQLException e) {
             e.printStackTrace();
-        } finally {
-            System.out.println(categories.map);
         }
     }
 
