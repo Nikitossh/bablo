@@ -70,7 +70,7 @@ public class ConsoleController implements Runnable{
 
             case 3:
                 ConsoleView.printLastMonth();
-                ConsoleView.printSelectThisMonth(DAO.selectionThisMonth());
+                ConsoleView.printMonth(DAO.selectionThisMonth());
                 ConsoleView.printSelectCostsSumm(DAO.selectionTotalValuesThisMonth(0));
                 ConsoleView.printSelectBudgetSummThisMonth(DAO.selectionTotalBudgetThisMonth());
                 // Print total

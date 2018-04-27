@@ -1,8 +1,11 @@
 package com.company.bablo;
 
+import com.company.bablo.persistent.DAO;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Formatter;
 
 /**
  * Created by nik on 5/3/17.
@@ -73,6 +76,8 @@ public class ConsoleView {
         System.out.println("Текущие траты за этот месяц:");
     }
 
+
+    //TODO: Убрать этот костыль и сделать красиво через Formatter
     public static void printSelectLastCost(ResultSet resultSet) {
         int categoryLength;
         int valueLength;
@@ -136,6 +141,25 @@ public class ConsoleView {
         }
     }
 
+    public static void printMonth(ResultSet rs) {
+        Formatter f = new Formatter(System.out);
+        f.format("%-20s %-10s %-10s", "Category", "Sum", "Budget");
+        System.out.println();
+        f.format("%-20s %-10s %-10s", "--------", "---", "------");
+        System.out.println();
+        try {
+            while (rs.next()) {
+                f.format("%-20s %-10s %-10s", rs.getString(1), rs.getString(2), rs.getString(3));
+                System.out.println();
+            }
+        } catch (SQLException e) {
+            System.out.println("Ошибка при работе метода printMonth() в классе ConsoleView");
+        }
+    }
+
+    public static void main(String[] args) {
+            ConsoleView.printMonth(DAO.selectionThisMonth());
+    }
 
     public static void printSelectCostsSumm(ResultSet resultSet) {
         System.out.println("------------------------------------------");
