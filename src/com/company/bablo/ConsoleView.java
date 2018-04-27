@@ -141,6 +141,18 @@ public class ConsoleView {
         }
     }
 
+    public static void printInCategory(ResultSet rs) {
+        Formatter f = new Formatter(System.out);
+        try {
+            while (rs.next()) {
+                f.format("%-20s %-10d %-50s", rs.getString(1), rs.getInt(2), rs.getString(3));
+                System.out.println();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     public static void printMonth(ResultSet rs) {
         Formatter f = new Formatter(System.out);
         f.format("%-20s %-10s %-10s", "Category", "Sum", "Budget");
@@ -157,39 +169,44 @@ public class ConsoleView {
         }
     }
 
+    public static void printTotal(ResultSet rs) {
+        int budget = getBudget(DAO.selectionTotalBudgetThisMonth());
+        Formatter f = new Formatter(System.out);
+        f.format("%-20s %-10s %-10s", "--------", "---", "------");
+        System.out.println();
+        try {
+            if (rs.next())
+            f.format("%-20s %-10d %-10d", "Total", rs.getInt(1), budget);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        System.out.println();
+    }
+
+    // Получаем строковое представление бюджета
+    public static int getBudget(ResultSet rs) {
+        try {
+            if(rs.next())
+                return rs.getInt(1);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return -1;
+    }
+
     public static void main(String[] args) {
             ConsoleView.printMonth(DAO.selectionThisMonth());
+            ConsoleView.printTotal(DAO.selectionTotalValuesThisMonth(1));
     }
 
-    public static void printSelectCostsSumm(ResultSet resultSet) {
-        System.out.println("------------------------------------------");
-        try {
-            if (resultSet.next()) {
-                System.out.print("Итого:");
-                printTab(4);
-                System.out.print(resultSet.getString(1));
-                if (resultSet.getString(1).length() < 4)               printTab(3);
-                else                                                      printTab(2);
-            }
-        } catch (SQLException e) {
-            System.out.println("ОШИБКА ПРИ ПАРСИНГЕ РЕЗАЛТСЕТА!!!!!!!!!!");
-            e.printStackTrace();
+
+    public static void printTab(int number) {
+        for (int i=0; i < number; i++) {
+            System.out.print("\t");
         }
     }
-
-    public static void printSelectBudgetSummThisMonth(ResultSet resultSet) {
-        try {
-            if (resultSet.next()) {
-                System.out.print(resultSet.getInt(1));
-                System.out.println();
-            }
-        } catch (SQLException e) {
-            System.out.print("Ошибка при получении ResultSet из selectionTotalAmountThisMonth");
-            e.printStackTrace();
-        }
-    }
-
-    public static void printSelectThisMonth(ResultSet rsCategory) {
+     /* Закомментированные методы использовались для вывода данных до того как я освоил работу с Formatter
+     public static void printSelectThisMonth(ResultSet rsCategory) {
         try {
 
 
@@ -218,12 +235,37 @@ public class ConsoleView {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-    }
+    } */
 
-    public static void printTab(int number) {
-        for (int i=0; i < number; i++) {
-            System.out.print("\t");
-        }
-    }
+
+//    public static void printSelectCostsSumm(ResultSet resultSet) {
+//        System.out.println("------------------------------------------");
+//        try {
+//            if (resultSet.next()) {
+//                System.out.print("Итого:");
+//                printTab(4);
+//                System.out.print(resultSet.getString(1));
+//                if (resultSet.getString(1).length() < 4)               printTab(3);
+//                else                                                      printTab(2);
+//            }
+//        } catch (SQLException e) {
+//            System.out.println("ОШИБКА ПРИ ПАРСИНГЕ РЕЗАЛТСЕТА!!!!!!!!!!");
+//            e.printStackTrace();
+//        }
+//    }
+//
+//    public static void printSelectBudgetSummThisMonth(ResultSet resultSet) {
+//        try {
+//            if (resultSet.next()) {
+//                System.out.print(resultSet.getInt(1));
+//                System.out.println();
+//            }
+//        } catch (SQLException e) {
+//            System.out.print("Ошибка при получении ResultSet из selectionTotalAmountThisMonth");
+//            e.printStackTrace();
+//        }
+//    }
+
+
 
 }
