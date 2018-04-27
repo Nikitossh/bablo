@@ -77,63 +77,16 @@ public class ConsoleView {
     }
 
 
-    //TODO: Убрать этот костыль и сделать красиво через Formatter
-    public static void printSelectLastCost(ResultSet resultSet) {
-        int categoryLength;
-        int valueLength;
+    // Будет 5 полей: id   date   category  sum   comment
+    public static void printCosts(ResultSet rs) {
+        Formatter f = new Formatter(System.out);
+        f.format("%-6s %-15s %-15s %-15s %-50s", "id", "date", "value", "category", "comment");
+        System.out.println();
+        f.format("%-6s %-15s %-15s %-15s %-50s", "--", "----", "-----", "--------", "-------");
+        System.out.println();
         try {
-            while (resultSet.next()) {
-                String id = resultSet.getString(1);
-                String category = resultSet.getString(2);
-                String value = resultSet.getString(3);
-                String comment = resultSet.getString(4);
-                String date = resultSet.getString(5);
-
-                // Проверка длины слова категории для выравнивания при выводе в консоль
-                if (category.length() < 5) {
-                    categoryLength = 3;
-                } else if (category.length() < 9) {
-                    categoryLength = 3;
-                } else if (category.length() < 14) {
-                    categoryLength = 2;
-                } else categoryLength = 1;
-
-                // Проверка длины значения траты для выравнивания при выводе на консоль
-                if (value.length() <= 3) {
-                    valueLength = 2;
-                } else if (value.length() <= 7) {
-                    valueLength = 1;
-                } else valueLength = 3;
-
-                // Вывод в консоль значений, разделенных табом с помощью метода printTab()
-                System.out.print(id);
-                printTab(1);
-                System.out.print(date);
-                printTab(1);
-                System.out.print(category);
-                // Варьируется после категории, взависимости от длины слова
-                printTab(categoryLength);
-                System.out.print(value);
-                // Варьируется от длины суммы
-                printTab(valueLength);
-                System.out.print(comment);
-                System.out.println();
-
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-    }
-
-    public static void printSelectMonthCostsInCategory(ResultSet resultSet) {
-        try {
-            while (resultSet.next()) {
-                System.out.print(resultSet.getString(1));
-                printTab(2);
-                System.out.print(resultSet.getString(2));
-                printTab(2);
-                System.out.print(resultSet.getString(3));
+            while (rs.next()) {
+                f.format("%-6s %-15s %-15s %-15s %-50s", rs.getInt(1), rs.getString(5), rs.getString(2), rs.getString(3), rs.getString(4));
                 System.out.println();
             }
         } catch (SQLException e) {
@@ -197,14 +150,16 @@ public class ConsoleView {
     public static void main(String[] args) {
             ConsoleView.printMonth(DAO.selectionThisMonth());
             ConsoleView.printTotal(DAO.selectionTotalValuesThisMonth(1));
+            ConsoleView.printInCategory(DAO.selectionMonthCostsInCategory("car"));
+            ConsoleView.printCosts(DAO.selectionLastCosts(5));
     }
 
 
-    public static void printTab(int number) {
-        for (int i=0; i < number; i++) {
-            System.out.print("\t");
-        }
-    }
+//    public static void printTab(int number) {
+//        for (int i=0; i < number; i++) {
+//            System.out.print("\t");
+//        }
+//    }
      /* Закомментированные методы использовались для вывода данных до того как я освоил работу с Formatter
      public static void printSelectThisMonth(ResultSet rsCategory) {
         try {
@@ -237,7 +192,53 @@ public class ConsoleView {
         }
     } */
 
-
+//    public static void printSelectLastCost(ResultSet resultSet) {
+//        int categoryLength;
+//        int valueLength;
+//        try {
+//            while (resultSet.next()) {
+//                String id = resultSet.getString(1);
+//                String category = resultSet.getString(2);
+//                String value = resultSet.getString(3);
+//                String comment = resultSet.getString(4);
+//                String date = resultSet.getString(5);
+//
+//                // Проверка длины слова категории для выравнивания при выводе в консоль
+//                if (category.length() < 5) {
+//                    categoryLength = 3;
+//                } else if (category.length() < 9) {
+//                    categoryLength = 3;
+//                } else if (category.length() < 14) {
+//                    categoryLength = 2;
+//                } else categoryLength = 1;
+//
+//                // Проверка длины значения траты для выравнивания при выводе на консоль
+//                if (value.length() <= 3) {
+//                    valueLength = 2;
+//                } else if (value.length() <= 7) {
+//                    valueLength = 1;
+//                } else valueLength = 3;
+//
+//                // Вывод в консоль значений, разделенных табом с помощью метода printTab()
+//                System.out.print(id);
+//                printTab(1);
+//                System.out.print(date);
+//                printTab(1);
+//                System.out.print(category);
+//                // Варьируется после категории, взависимости от длины слова
+//                printTab(categoryLength);
+//                System.out.print(value);
+//                // Варьируется от длины суммы
+//                printTab(valueLength);
+//                System.out.print(comment);
+//                System.out.println();
+//
+//            }
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
+//
+//    }
 //    public static void printSelectCostsSumm(ResultSet resultSet) {
 //        System.out.println("------------------------------------------");
 //        try {
@@ -262,6 +263,21 @@ public class ConsoleView {
 //            }
 //        } catch (SQLException e) {
 //            System.out.print("Ошибка при получении ResultSet из selectionTotalAmountThisMonth");
+//            e.printStackTrace();
+//        }
+//    }
+
+//public static void printSelectMonthCostsInCategory(ResultSet resultSet) {
+//        try {
+//            while (resultSet.next()) {
+//                System.out.print(resultSet.getString(1));
+//                printTab(2);
+//                System.out.print(resultSet.getString(2));
+//                printTab(2);
+//                System.out.print(resultSet.getString(3));
+//                System.out.println();
+//            }
+//        } catch (SQLException e) {
 //            e.printStackTrace();
 //        }
 //    }

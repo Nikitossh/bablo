@@ -7,8 +7,8 @@ import com.company.bablo.util.Inputs;
 import java.time.LocalDate;
 
 import static com.company.bablo.ConsoleAux.selectDate;
+import static com.company.bablo.ConsoleView.printMainMenu;
 import static com.company.bablo.entity.Categories.getListCategories;
-import static com.company.bablo.ConsoleView.printSelectMonthCostsInCategory;
 import static com.company.bablo.entity.Cost.*;
 import static com.company.bablo.persistent.DAO.getCategoriesRS;
 import static com.company.bablo.persistent.DAO.selectionLastMonthByCategory;
@@ -63,7 +63,7 @@ public class ConsoleController implements Runnable{
 
             case 2:
                 ConsoleView.printLastCosts();
-                ConsoleView.printSelectLastCost(DAO.selectionLastCosts(5));
+                ConsoleView.printCosts(DAO.selectionLastCosts(5));
                 ConsoleView.printMainMenu();
                 selectMainMenu();
                 break;
@@ -72,9 +72,6 @@ public class ConsoleController implements Runnable{
                 ConsoleView.printLastMonth();
                 ConsoleView.printMonth(DAO.selectionThisMonth());
                 ConsoleView.printTotal(DAO.selectionTotalValuesThisMonth(0));
-                //ConsoleView.printSelectCostsSumm(DAO.selectionTotalValuesThisMonth(0));
-                //ConsoleView.printSelectBudgetSummThisMonth(DAO.selectionTotalBudgetThisMonth());
-                // Print total
                 ConsoleView.printMainMenu();
                 selectMainMenu();
                 break;
@@ -88,7 +85,7 @@ public class ConsoleController implements Runnable{
             case 5:
                 System.out.println("Удаление последней траты");
                 System.out.println("Вы действительно хотите удалить эту трату?");
-                ConsoleView.printSelectLastCost(DAO.selectionLastCosts(1));
+                ConsoleView.printCosts(DAO.selectionLastCosts(1));
                 System.out.println("Введите 'y' для удаления или другой символ для выхода");
                 String answer = Inputs.inputString();
                 if (answer.equals("y") || answer.equals("Y")) {
@@ -111,15 +108,16 @@ public class ConsoleController implements Runnable{
                 System.out.println("Вывод всех трат в одной категории за предыдущий месяц.");
                 System.out.println("Введите категорию:");
                 String selectCategory = Inputs.inputString();
-                printSelectMonthCostsInCategory(DAO.selectionMonthCostsInCategory(selectCategory));
+                ConsoleView.printInCategory(DAO.selectionMonthCostsInCategory(selectCategory));
+                //printSelectMonthCostsInCategory(DAO.selectionMonthCostsInCategory(selectCategory));
+                selectMainMenu();
                 break;
 
             case 8:
                 System.out.println("Вывод всех трат по категориям за предыдущий месяц");
                 ConsoleView.printMonth(selectionLastMonthByCategory());
                 ConsoleView.printTotal(DAO.selectionTotalValuesThisMonth(1));
-                //ConsoleView.printSelectCostsSumm(DAO.selectionTotalValuesThisMonth(1));
-                //ConsoleView.printSelectBudgetSummThisMonth(DAO.selectionTotalBudgetThisMonth());
+                printMainMenu();
                 selectMainMenu();
 
 
