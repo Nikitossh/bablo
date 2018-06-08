@@ -112,7 +112,6 @@ public class CreateSQL {
     }
 
     // Выборка за месяц по одной категории, просуммированная по одинаковым комментам.
-
     static String selectMonthByCategory(String category) {
         return "SELECT category.category, SUM(costs.value), costs.comment AS comment FROM costs " +
         "INNER JOIN category ON costs.category_id = category.id " +
@@ -123,6 +122,20 @@ public class CreateSQL {
         "GROUP BY comment " +
         "ORDER BY value;";
     }
+
+    // Это для всех категорий
+    // ПОка использовал только вручную для сбора всех трат за прошедшие месяцы.
+    static String selectMonthByComments() {
+        return "select SUM(value), category, comment " +
+                "from costs " +
+                "INNER JOIN date ON date_id=date.id " +
+                "INNER JOIN category ON category_id=category.id " +
+                "where YEAR(date)=YEAR( NOW()) " +
+                "AND MONTH(date)=MONTH(DATE_ADD(NOW(), INTERVAL -1 MONTH)) " +
+                "GROUP BY comment " +
+                "ORDER BY category;";
+    }
+
 
     // Бюджет
     static final String selectOneMonthBudget() {

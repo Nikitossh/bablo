@@ -21,13 +21,17 @@ public class ConsoleController implements Runnable{
     public void run() {
         ConsoleView.printMainMenu();
         selectMainMenu();
+
     }
+
+
+
+
 
     // work with selected point by user in MainMenu
     public static void selectMainMenu() {
         int selector = Inputs.inputInt();
 
-        assert (selector > 0) : "Вы выбрали значение меньше нуля!";
         switch (selector) {
             case 1:
                 // Здесь вся логика работы программы при работе из консоли

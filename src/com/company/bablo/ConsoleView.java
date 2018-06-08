@@ -9,6 +9,7 @@ import java.util.Formatter;
 
 /**
  * Created by nik on 5/3/17.
+ * Great modification with using Formatter on 27/4/18
  */
 public class ConsoleView {
 
@@ -30,12 +31,12 @@ public class ConsoleView {
         System.out.println("1. Позавчера");
         System.out.println("2. Вчера");
         System.out.println("3. Введите дату в формате yyyy-MM-dd");
-        System.out.println("Или введите любую другую кнопку, если СЕГОДНЯ");
+        System.out.println("Или нажмите `Enter` если СЕГОДНЯ");
     }
 
     public static void printSelectCategory() {
         System.out.println("Выберите категорию из списка.");
-        System.out.println("Для добавления новой категории нажмите \"n\" " );
+        System.out.println("Для добавления новой категории нажмите \"n\" ");
     }
 
     public static void printWriteValue() {
@@ -61,8 +62,7 @@ public class ConsoleView {
         for (int i = 0; i < count; i++) {
             if (i < 10) {
                 System.out.println(i + ".  " + list.get(i));
-            }
-            else {
+            } else {
                 System.out.println(i + ". " + list.get(i));
             }
         }
@@ -129,7 +129,7 @@ public class ConsoleView {
         System.out.println();
         try {
             if (rs.next())
-            f.format("%-20s %-10d %-10d", "Total", rs.getInt(1), budget);
+                f.format("%-20s %-10d %-10d", "Total", rs.getInt(1), budget);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -139,7 +139,7 @@ public class ConsoleView {
     // Получаем строковое представление бюджета
     public static int getBudget(ResultSet rs) {
         try {
-            if(rs.next())
+            if (rs.next())
                 return rs.getInt(1);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -148,11 +148,12 @@ public class ConsoleView {
     }
 
     public static void main(String[] args) {
-            ConsoleView.printMonth(DAO.selectionThisMonth());
-            ConsoleView.printTotal(DAO.selectionTotalValuesThisMonth(1));
-            ConsoleView.printInCategory(DAO.selectionMonthCostsInCategory("car"));
-            ConsoleView.printCosts(DAO.selectionLastCosts(5));
+        ConsoleView.printMonth(DAO.selectionThisMonth());
+        ConsoleView.printTotal(DAO.selectionTotalValuesThisMonth(1));
+        ConsoleView.printInCategory(DAO.selectionMonthCostsInCategory("car"));
+        ConsoleView.printCosts(DAO.selectionLastCosts(5));
     }
+}
 
 
 //    public static void printTab(int number) {
@@ -160,37 +161,37 @@ public class ConsoleView {
 //            System.out.print("\t");
 //        }
 //    }
-     /* Закомментированные методы использовались для вывода данных до того как я освоил работу с Formatter
-     public static void printSelectThisMonth(ResultSet rsCategory) {
-        try {
-
-
-            System.out.println("Категория\t\t\tСумма\t\tБюджет" );
-            System.out.println("------------------------------------------");
-
-            while (rsCategory.next()) {
-                String category = rsCategory.getString(1);
-                String value = rsCategory.getString(2);
-                String amount = rsCategory.getString(3);
-
-                 //Print with "\t" as indents independents on category or
-                System.out.print(category);
-                if (category.length() < 4)                      printTab(5);
-                else if (category.equals("transport"))          printTab(3);
-                else if (category.equals("communications"))     printTab(2);
-                else                                            printTab(4);
-                System.out.print(value);
-                if (value.length() < 4)                         printTab(3);
-                else if (value.length() > 5)                    printTab(1);
-                else                                            printTab(2);
-                System.out.print(amount);
-                System.out.println();
-
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    } */
+//      Закомментированные методы использовались для вывода данных до того как я освоил работу с Formatter
+//     public static void printSelectThisMonth(ResultSet rsCategory) {
+//        try {
+//
+//
+//            System.out.println("Категория\t\t\tСумма\t\tБюджет" );
+//            System.out.println("------------------------------------------");
+//
+//            while (rsCategory.next()) {
+//                String category = rsCategory.getString(1);
+//                String value = rsCategory.getString(2);
+//                String amount = rsCategory.getString(3);
+//
+//                 //Print with "\t" as indents independents on category or
+//                System.out.print(category);
+//                if (category.length() < 4)                      printTab(5);
+//                else if (category.equals("transport"))          printTab(3);
+//                else if (category.equals("communications"))     printTab(2);
+//                else                                            printTab(4);
+//                System.out.print(value);
+//                if (value.length() < 4)                         printTab(3);
+//                else if (value.length() > 5)                    printTab(1);
+//                else                                            printTab(2);
+//                System.out.print(amount);
+//                System.out.println();
+//
+//            }
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
+//    }
 
 //    public static void printSelectLastCost(ResultSet resultSet) {
 //        int categoryLength;
@@ -281,7 +282,3 @@ public class ConsoleView {
 //            e.printStackTrace();
 //        }
 //    }
-
-
-
-}

@@ -26,11 +26,12 @@ public class RegularExpressions {
 
     public String[] splitMessageText(String messageText) {
         String[] result = {"", "", ""};
+        this.isMatch(messageText);
         Matcher matcher = pattern.matcher(messageText);
         matcher.matches();
-        System.out.println(matcher.group(1));
+        //System.out.println(matcher.group(1));
         result[0] = matcher.group(1);
-        System.out.println(matcher.group(3));
+        //System.out.println(matcher.group(3));
         result[1] = matcher.group(3);
         if(matcher.group(4) != null) {
             result[2] = matcher.group(4);
