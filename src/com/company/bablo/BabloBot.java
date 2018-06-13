@@ -5,8 +5,6 @@ package com.company.bablo;
  */
 
 import com.company.bablo.entity.Cost;
-import com.company.bablo.persistent.CRUD;
-import com.company.bablo.persistent.CreateSQL;
 import com.company.bablo.persistent.DAO;
 import com.company.bablo.regexp.RegularExpressions;
 import org.telegram.telegrambots.ApiContextInitializer;
@@ -19,7 +17,6 @@ import org.telegram.telegrambots.exceptions.TelegramApiException;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDate;
 
 
 public class BabloBot extends TelegramLongPollingBot {
@@ -35,11 +32,11 @@ public class BabloBot extends TelegramLongPollingBot {
         TelegramBotsApi telegramBotsApi = new TelegramBotsApi();
 
 
-//        try {
-//            telegramBotsApi.registerBot(bot);
-//        } catch (TelegramApiException e) {
-//            e.printStackTrace();
-//        }
+        try {
+            telegramBotsApi.registerBot(bot);
+        } catch (TelegramApiException e) {
+            e.printStackTrace();
+        }
 
         // Во втором потоке запускаем Контроллер работы в консоли!
         // При этом выход из консоли закрывает программу целиком!
