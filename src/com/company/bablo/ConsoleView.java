@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Formatter;
+import java.util.List;
 
 /**
  * Created by nik on 5/3/17.
@@ -55,7 +56,7 @@ public class ConsoleView {
         System.out.println("ОШИБКА ПРИ ДОБАВЛЕНИИ ЗАПИСИ В БД!");
     }
 
-    public static void printListCategories(ArrayList list) {
+    public static void printListCategories(List list) {
         assert !list.isEmpty();
 
         int count = list.size();

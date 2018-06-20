@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -35,7 +36,7 @@ public class Categories {
     }
 
     /** Get categories List */
-    public static ArrayList<String> getListCategories(ResultSet resultSet) {
+    public static List<String> getListCategories(ResultSet resultSet) {
         ArrayList<String> listCategories = new ArrayList<>();
         try {
             while (resultSet.next()) {
