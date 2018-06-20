@@ -20,7 +20,6 @@ public class ConsoleView {
         System.out.println("1. Добавить трату.");
         System.out.println("2. Показать 5 последних трат.");
         System.out.println("3. Показать траты в этом месяце.");
-        System.out.println("4. Создать бюджет на следующий месяц.");
         System.out.println("5. Удалить последнюю трату.");
         System.out.println("6. Выход из программы.");
         System.out.println("7. Вывод всех трат за предыдущий месяц по категории");
@@ -109,13 +108,13 @@ public class ConsoleView {
 
     public static void printMonth(ResultSet rs) {
         Formatter f = new Formatter(System.out);
-        f.format("%-20s %-10s %-10s", "Category", "Sum", "Budget");
+        f.format("%-20s %-10s", "Category", "Sum");
         System.out.println();
-        f.format("%-20s %-10s %-10s", "--------", "---", "------");
+        f.format("%-20s %-10s", "--------", "---");
         System.out.println();
         try {
             while (rs.next()) {
-                f.format("%-20s %-10s %-10s", rs.getString(1), rs.getString(2), rs.getString(3));
+                f.format("%-20s %-10s", rs.getString(1), rs.getString(2));
                 System.out.println();
             }
         } catch (SQLException e) {
@@ -124,28 +123,16 @@ public class ConsoleView {
     }
 
     public static void printTotal(ResultSet rs) {
-        int budget = getBudget(DAO.selectionTotalBudgetThisMonth());
         Formatter f = new Formatter(System.out);
-        f.format("%-20s %-10s %-10s", "--------", "---", "------");
+        f.format("%-20s %-10s", "--------", "---");
         System.out.println();
         try {
             if (rs.next())
-                f.format("%-20s %-10d %-10d", "Total", rs.getInt(1), budget);
+                f.format("%-20s %-10d", "Total", rs.getInt(1));
         } catch (SQLException e) {
             e.printStackTrace();
         }
         System.out.println();
-    }
-
-    // Получаем строковое представление бюджета
-    public static int getBudget(ResultSet rs) {
-        try {
-            if (rs.next())
-                return rs.getInt(1);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return -1;
     }
 
     public static void main(String[] args) {
@@ -155,131 +142,3 @@ public class ConsoleView {
         ConsoleView.printCosts(DAO.selectionLastCosts(5));
     }
 }
-
-
-//    public static void printTab(int number) {
-//        for (int i=0; i < number; i++) {
-//            System.out.print("\t");
-//        }
-//    }
-//      Закомментированные методы использовались для вывода данных до того как я освоил работу с Formatter
-//     public static void printSelectThisMonth(ResultSet rsCategory) {
-//        try {
-//
-//
-//            System.out.println("Категория\t\t\tСумма\t\tБюджет" );
-//            System.out.println("------------------------------------------");
-//
-//            while (rsCategory.next()) {
-//                String category = rsCategory.getString(1);
-//                String value = rsCategory.getString(2);
-//                String amount = rsCategory.getString(3);
-//
-//                 //Print with "\t" as indents independents on category or
-//                System.out.print(category);
-//                if (category.length() < 4)                      printTab(5);
-//                else if (category.equals("transport"))          printTab(3);
-//                else if (category.equals("communications"))     printTab(2);
-//                else                                            printTab(4);
-//                System.out.print(value);
-//                if (value.length() < 4)                         printTab(3);
-//                else if (value.length() > 5)                    printTab(1);
-//                else                                            printTab(2);
-//                System.out.print(amount);
-//                System.out.println();
-//
-//            }
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
-//    }
-
-//    public static void printSelectLastCost(ResultSet resultSet) {
-//        int categoryLength;
-//        int valueLength;
-//        try {
-//            while (resultSet.next()) {
-//                String id = resultSet.getString(1);
-//                String category = resultSet.getString(2);
-//                String value = resultSet.getString(3);
-//                String comment = resultSet.getString(4);
-//                String date = resultSet.getString(5);
-//
-//                // Проверка длины слова категории для выравнивания при выводе в консоль
-//                if (category.length() < 5) {
-//                    categoryLength = 3;
-//                } else if (category.length() < 9) {
-//                    categoryLength = 3;
-//                } else if (category.length() < 14) {
-//                    categoryLength = 2;
-//                } else categoryLength = 1;
-//
-//                // Проверка длины значения траты для выравнивания при выводе на консоль
-//                if (value.length() <= 3) {
-//                    valueLength = 2;
-//                } else if (value.length() <= 7) {
-//                    valueLength = 1;
-//                } else valueLength = 3;
-//
-//                // Вывод в консоль значений, разделенных табом с помощью метода printTab()
-//                System.out.print(id);
-//                printTab(1);
-//                System.out.print(date);
-//                printTab(1);
-//                System.out.print(category);
-//                // Варьируется после категории, взависимости от длины слова
-//                printTab(categoryLength);
-//                System.out.print(value);
-//                // Варьируется от длины суммы
-//                printTab(valueLength);
-//                System.out.print(comment);
-//                System.out.println();
-//
-//            }
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
-//
-//    }
-//    public static void printSelectCostsSumm(ResultSet resultSet) {
-//        System.out.println("------------------------------------------");
-//        try {
-//            if (resultSet.next()) {
-//                System.out.print("Итого:");
-//                printTab(4);
-//                System.out.print(resultSet.getString(1));
-//                if (resultSet.getString(1).length() < 4)               printTab(3);
-//                else                                                      printTab(2);
-//            }
-//        } catch (SQLException e) {
-//            System.out.println("ОШИБКА ПРИ ПАРСИНГЕ РЕЗАЛТСЕТА!!!!!!!!!!");
-//            e.printStackTrace();
-//        }
-//    }
-//
-//    public static void printSelectBudgetSummThisMonth(ResultSet resultSet) {
-//        try {
-//            if (resultSet.next()) {
-//                System.out.print(resultSet.getInt(1));
-//                System.out.println();
-//            }
-//        } catch (SQLException e) {
-//            System.out.print("Ошибка при получении ResultSet из selectionTotalAmountThisMonth");
-//            e.printStackTrace();
-//        }
-//    }
-
-//public static void printSelectMonthCostsInCategory(ResultSet resultSet) {
-//        try {
-//            while (resultSet.next()) {
-//                System.out.print(resultSet.getString(1));
-//                printTab(2);
-//                System.out.print(resultSet.getString(2));
-//                printTab(2);
-//                System.out.print(resultSet.getString(3));
-//                System.out.println();
-//            }
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
-//    }

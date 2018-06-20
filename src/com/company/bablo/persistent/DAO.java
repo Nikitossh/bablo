@@ -149,19 +149,4 @@ public class DAO {
         ResultSet rs = executePreparedStatement(createPreparedStatement(sql));
         return rs;
     }
-
-
-
-    // Все что связано с бюджетом
-    // Общая сумма бюджета на текущий месяц
-    public static ResultSet selectionTotalBudgetThisMonth() {
-        String sql = CreateSQL.selectTotalBudgetThisMonth();
-        ResultSet rs = executePreparedStatement(createPreparedStatement(sql));
-        return rs;
-    }
-
-    public static int insertionBudget(Budget budget) {
-        String sql = CreateSQL.insertBudgetCategory(budget);
-        return executePreparedUpdate(createPreparedStatement(sql));
-    }
 }

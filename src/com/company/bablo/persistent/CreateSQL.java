@@ -135,31 +135,4 @@ public class CreateSQL {
                 "GROUP BY comment " +
                 "ORDER BY category;";
     }
-
-
-    // Бюджет
-    static final String selectOneMonthBudget() {
-        return "SELECT category.category, budget.amount, comment FROM budget NATURAL JOIN category ON category_id";
-    }
-
-
-    static final String insertBudgetCategory(Budget budget) {
-        return "INSERT INTO budget (amount, comment, date_id, category_id)"
-                + "VALUES (" + budget.getAmount() +", " + budget.getComment() + ", "
-                + "(SELECT id FROM date WHERE date=" + "'"  + budget.getDate()  + "'" + "), "
-                + "(SELECT id FROM category WHERE category=" + "'" + budget.getCategory() + "'" + "));";
-    }
-
-    static String selectTotalBudgetThisMonth() {
-        // Это сейчас не работает, потому что бюджет не привязывается к месяцу. Он пока один и тот же на все месяцы
-//        return "SELECT SUM(amount) " + "" +
-//                "FROM budget " +
-//                "INNER JOIN date " + "" +
-//                "ON budget.date_id=date.id " + "" +
-//                "WHERE MONTH(date)=MONTH(NOW()) " + "" +
-//                "AND " + "" +
-//                "YEAR(date)=YEAR(NOW());";
-        // Здесь же выборка уже идет исходя из значений
-        return "SELECT SUM(amount) FROM budget";
-    }
 }
