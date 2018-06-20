@@ -40,8 +40,6 @@ public class ConsoleAux {
         String date = Inputs.inputString();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate result = LocalDate.parse(date, formatter);
-
         return result;
-
     }
 }
