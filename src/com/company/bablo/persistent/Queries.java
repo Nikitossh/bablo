@@ -1,6 +1,5 @@
 package com.company.bablo.persistent;
 
-import com.company.bablo.entity.Budget;
 import com.company.bablo.entity.Cost;
 // TODO: Символ ' ломает строку запроса. При его наличии необходимо его экранировать.
 
@@ -8,7 +7,7 @@ import com.company.bablo.entity.Cost;
  * Created by nik on 4/17/17.
  *
  */
-public class CreateSQL {
+public class Queries {
 
 // Cost
     static final String insertNewCost(Cost cost) {

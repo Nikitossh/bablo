@@ -4,7 +4,7 @@ package com.company.bablo.persistent;
  * Created by nik on 2/21/17.
  */
 
-import com.company.bablo.entity.Budget;
+
 import com.company.bablo.entity.Cost;
 
 import java.sql.*;
@@ -54,7 +54,7 @@ public class DAO {
     }
 
     // Выполняет INSERT, UPDATE или DELETE и возвращает какое-то число.
-    private static int executePreparedUpdate(PreparedStatement preparedStatement) {
+    protected static int executePreparedUpdate(PreparedStatement preparedStatement) {
         int result = 0;
 
         try {
@@ -66,43 +66,48 @@ public class DAO {
     }
 
 
-    // Далее идет блок выполнения запросов полученных из класса CreateSQL
+
+
+
+
+
+    // Далее идет блок выполнения запросов полученных из класса Queries
 
     // Все что связано с датой и временем
     // Добавление даты
     public static int insertionData(Cost cost) {
-        return executePreparedUpdate(createPreparedStatement(CreateSQL.insertNewDate(cost)));
+        return executePreparedUpdate(createPreparedStatement(Queries.insertNewDate(cost)));
     }
 
     // Все что связано с тратами
     // Добавляем запись.
     public static int insertionCost(Cost cost) {
-       return executePreparedUpdate(createPreparedStatement(CreateSQL.insertNewCost(cost)));
+       return executePreparedUpdate(createPreparedStatement(Queries.insertNewCost(cost)));
     }
 
     // Удаление последней записи по ID
     public static int deletionCost() {
-        return executePreparedUpdate(createPreparedStatement(CreateSQL.deleteLastCost()));
+        return executePreparedUpdate(createPreparedStatement(Queries.deleteLastCost()));
     }
 
     // Выборка последних пяти трат
     // Для другого количества меняем limit
     public static ResultSet selectionLastCosts(int limit) {
-        String sql = CreateSQL.selectLastCost(limit);
+        String sql = Queries.selectLastCost(limit);
         ResultSet rs = executePreparedStatement(createPreparedStatement(sql));
         return rs;
     }
 
     // Получаем category, values, budget.amount
     public static ResultSet selectionThisMonth() {
-        String sql = CreateSQL.selectThisMonth();
+        String sql = Queries.selectThisMonth();
         ResultSet rs = executePreparedStatement(createPreparedStatement(sql));
         return rs;
     }
 
 
     public static ResultSet selectionLastMonthByCategory() {
-        String sql = CreateSQL.selectLastMonthByCategory();
+        String sql = Queries.selectLastMonthByCategory();
         ResultSet rs = executePreparedStatement(createPreparedStatement(sql));
         return rs;
     }
@@ -121,8 +126,8 @@ public class DAO {
 
 
     // Сумма всех трат за текущий месяц
-    public static ResultSet selectionTotalValuesThisMonth(int interval) {
-        String sql = CreateSQL.selectMonthTotalValueOfCosts(interval);
+    public static ResultSet selectionTotalValuesMonth(int interval) {
+        String sql = Queries.selectMonthTotalValueOfCosts(interval);
         ResultSet rs = executePreparedStatement(createPreparedStatement(sql));
         return rs;
     }
@@ -131,21 +136,21 @@ public class DAO {
 // Все что связано с категориями
     // Получение списка категорий
     public static ResultSet getCategoriesRS() {
-        String sql = CreateSQL.selectListCategories();
+        String sql = Queries.selectListCategories();
         ResultSet rs = executePreparedStatement(createPreparedStatement(sql));
         return rs;
     }
 
     // Получение количества категорий. В ResultSet будет одно число!
     public static ResultSet getCategoriesCountRS() {
-        String sql = CreateSQL.selectCountCategories();
+        String sql = Queries.selectCountCategories();
         ResultSet rs = executePreparedStatement(createPreparedStatement(sql));
         return rs;
     }
 
     // Получение всех трат за прыдущий месяц в указанной категории
     public static ResultSet selectionMonthCostsInCategory(String category) {
-        String sql = CreateSQL.selectMonthByCategory(category);
+        String sql = Queries.selectMonthByCategory(category);
         ResultSet rs = executePreparedStatement(createPreparedStatement(sql));
         return rs;
     }

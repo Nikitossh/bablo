@@ -80,7 +80,7 @@ public class TelegramBot  extends TelegramLongPollingBot {
             String total = "";
 
             try {
-                ResultSet rsTotal = DAO.selectionTotalValuesThisMonth(0);
+                ResultSet rsTotal = DAO.selectionTotalValuesMonth(0);
 
                 if (rsTotal.next()) {
                     total = rsTotal.getString(1);

@@ -4,7 +4,6 @@ import com.company.bablo.persistent.DAO;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.Formatter;
 import java.util.List;
 
@@ -137,7 +136,7 @@ public class ConsoleView {
 
     public static void main(String[] args) {
         ConsoleView.printMonth(DAO.selectionThisMonth());
-        ConsoleView.printTotal(DAO.selectionTotalValuesThisMonth(1));
+        ConsoleView.printTotal(DAO.selectionTotalValuesMonth(1));
         ConsoleView.printInCategory(DAO.selectionMonthCostsInCategory("car"));
         ConsoleView.printCosts(DAO.selectionLastCosts(5));
     }

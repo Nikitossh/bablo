@@ -75,7 +75,7 @@ public class ConsoleController implements Runnable{
             case 3:
                 ConsoleView.printLastMonth();
                 ConsoleView.printMonth(DAO.selectionThisMonth());
-                ConsoleView.printTotal(DAO.selectionTotalValuesThisMonth(0));
+                ConsoleView.printTotal(DAO.selectionTotalValuesMonth(0));
                 ConsoleView.printMainMenu();
                 selectMainMenu();
                 break;
@@ -120,7 +120,7 @@ public class ConsoleController implements Runnable{
             case 8:
                 System.out.println("Вывод всех трат по категориям за предыдущий месяц");
                 ConsoleView.printMonth(selectionLastMonthByCategory());
-                ConsoleView.printTotal(DAO.selectionTotalValuesThisMonth(1));
+                ConsoleView.printTotal(DAO.selectionTotalValuesMonth(1));
                 printMainMenu();
                 selectMainMenu();
 
