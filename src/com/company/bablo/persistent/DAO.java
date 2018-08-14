@@ -30,7 +30,7 @@ public class DAO {
     }
 
     // Создание preparedStatement с помощью полученного в качестве аргумента SQL
-    static PreparedStatement createPreparedStatement(String SQL) {
+    public static PreparedStatement createPreparedStatement(String SQL) {
         Connection connection = getDBConnection();
         PreparedStatement preparedStatement = null;
 

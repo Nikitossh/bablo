@@ -2,12 +2,14 @@ package com.company.bablo;
 
 import com.company.bablo.entity.Cost;
 import com.company.bablo.persistent.DAO;
+import com.company.bablo.persistent.Queries;
+import com.company.bablo.persistent.Query;
 import com.company.bablo.util.Inputs;
 
 import java.time.LocalDate;
 
 import static com.company.bablo.ConsoleAux.selectDate;
-import static com.company.bablo.ConsoleView.printMainMenu;
+import static com.company.bablo.ConsoleView.*;
 import static com.company.bablo.entity.Categories.getListCategories;
 import static com.company.bablo.entity.Cost.*;
 import static com.company.bablo.persistent.DAO.getCategoriesRS;
@@ -24,24 +26,20 @@ public class ConsoleController implements Runnable{
 
     }
 
-
-
-
-
-    // work with selected point by user in MainMenu
     public static void selectMainMenu() {
         int selector = Inputs.inputInt();
 
         switch (selector) {
+            case 0:
+                System.out.println("Ввод траты вида: 08.07 500 food shop");
+                String in = Inputs.inputString();
+                break;
+
             case 1:
-                // Здесь вся логика работы программы при работе из консоли
-                // Для начала запросим у пользовтеля данные для создания платежа.
-                ConsoleView.printSelectDate();
+                printSelectDate();
                 LocalDate date =  selectDate(Inputs.inputInt());
-                // Запрашиваем ввод суммы
-                ConsoleView.printWriteValue();
+                System.out.println("Введите сумму траты");
                 int value = Inputs.inputInt();
-                // Запрашиваем категорию.
                 ConsoleView.printSelectCategory();
                 ConsoleView.printListCategories(getListCategories(getCategoriesRS()));
                 String category = Inputs.inputString();
@@ -123,7 +121,14 @@ public class ConsoleController implements Runnable{
                 ConsoleView.printTotal(DAO.selectionTotalValuesMonth(1));
                 printMainMenu();
                 selectMainMenu();
+                break;
 
+            case 9:
+                System.out.println("Вывод за предыдущий месяц по категориям по комментариям");
+                printByComment(Query.selectData(DAO.createPreparedStatement(Queries.selectMonthByComments())));
+                printMainMenu();
+                selectMainMenu();
+                break;
 
             default:
                 System.out.println("Вы не выбрали ни одного пункта меню. Выберите.");

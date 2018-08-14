@@ -22,11 +22,11 @@ public class ConsoleView {
         System.out.println("5. Удалить последнюю трату.");
         System.out.println("6. Выход из программы.");
         System.out.println("7. Вывод всех трат за предыдущий месяц по категории");
+        System.out.println("9. Предыдущий месяц по подкатегориям");
     }
 
     public static void printSelectDate() {
-        System.out.println("Вы в меню добавления трат.");
-        System.out.println("Выберите дату совершения траты:");
+        System.out.println("Выберите дату:");
         System.out.println("1. Позавчера");
         System.out.println("2. Вчера");
         System.out.println("3. Введите дату в формате yyyy-MM-dd");
@@ -36,10 +36,6 @@ public class ConsoleView {
     public static void printSelectCategory() {
         System.out.println("Выберите категорию из списка.");
         System.out.println("Для добавления новой категории нажмите \"n\" ");
-    }
-
-    public static void printWriteValue() {
-        System.out.println("Напишите потраченную сумму.");
     }
 
     public static void printWriteComment() {
@@ -103,6 +99,24 @@ public class ConsoleView {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    public static void printByComment(ResultSet rs) {
+        Formatter f = new Formatter(System.out);
+        f.format("%-20s %-20s %-10s", "Value", "Category", "Comment");
+        System.out.println();
+        f.format("%-20s %-20s %-10s", "-----", "--------", "-------");
+        System.out.println();
+        try {
+            while (rs.next()) {
+                f.format("%-20s %-20s %-10s", rs.getString(1), rs.getString(2), rs.getString(3));
+                System.out.println();
+            }
+        } catch (SQLException e) {
+            System.out.println("Ошибка в распарсе RS");
+        }
+
+
     }
 
     public static void printMonth(ResultSet rs) {

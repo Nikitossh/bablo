@@ -124,7 +124,7 @@ public class Queries {
 
     // Это для всех категорий
     // ПОка использовал только вручную для сбора всех трат за прошедшие месяцы.
-    static String selectMonthByComments() {
+    public static String selectMonthByComments() {
         return "select SUM(value), category, comment " +
                 "from costs " +
                 "INNER JOIN date ON date_id=date.id " +

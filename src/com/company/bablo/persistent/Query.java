@@ -11,8 +11,7 @@ public class Query {
         return result;
     }
 
-    public static void selectData(String sqlQuery, PreparedStatement ps) {
-        ps = DAO.createPreparedStatement(sqlQuery);
-        DAO.executePreparedStatement(ps);
+    public static ResultSet selectData(PreparedStatement ps) {
+        return DAO.executePreparedStatement(ps);
     }
 }
