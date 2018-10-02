@@ -4,21 +4,19 @@ import com.company.bablo.persistent.DAO;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by nik on 6/2/17.
- * Creating
+ * Modified by nik 02/10/18
  * При создании экземпляра класса, создается список Map, конструктор которого опрашивает БД
  * и на основе ответа заполняет список.
  */
 
 public class Categories {
-    private Map<Integer, String> map = new HashMap<>();
+    private Map<Integer, String> map = new TreeMap<>();
 
+    // todo: Стоит ли оставлять выборку в конструкторе класса или нет?
     public Categories(){
         try {
             getCategoriesMap(DAO.getCategoriesRS(), map);
