@@ -13,7 +13,6 @@ import java.util.Scanner;
 
 
 public class Start {
-//    Categories categories = new Categories();
     NewCostMenu ncm = new NewCostMenu();
     Scanner scanner = new Scanner(System.in);
 
@@ -39,23 +38,24 @@ public class Start {
         /** Ожидаем нажатия нужной кнопки, остальные игнорируем*/
     }
 
+    /** Очистка консоли в Linux */
     public static void clearConsole() {
         System.out.print("\033\143");
     }
 
+    /** Бесконечный цикл в ожидании ввода одной из букв */
     public void doSmth() {
-//        Scanner scanner = new Scanner(System.in);
-
         while (true) {
             String str = scanner.next();
 
+            //
             if("n".equals(str) || "N".equals(str)) {
                 ncm.printNewCost();
                 ncm.work();
                 break;
             }
-            if("i".equals(str)) {
-                // Идем в метод создания костов
+            if("i".equals(str) || "I".equals(str)) {
+
                 System.out.println("in this month");
             }
             if("l".equals(str)) {

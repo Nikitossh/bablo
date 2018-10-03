@@ -1,10 +1,14 @@
 package com.company.bablo.Terminal;
 
+import com.company.bablo.entity.Cost;
 import com.company.bablo.regexp.Shablonator;
 import com.company.bablo.util.Inputs;
 
+import static com.company.bablo.persistent.DAO.insertionCost;
+
 /**
  * Класс для работы в консоли.
+ * Меню добавления новых костов.
  * */
 
 public class NewCostMenu {
@@ -13,16 +17,16 @@ public class NewCostMenu {
     public void printNewCost() {
         System.out.println("Введите трату в одном из следующих форматов: ");
         System.out.println("100 food shop");
-//        System.out.println("yy 2020 car fuel");
-//        System.out.println("23.08.2018 2002 food shop");
         System.out.println();
-//        System.out.println("Ну и вообще в идеале сделать рутинную по обработке комментария");
-//        System.out.println("И если совпадает с шаблоном, то сразу же подставляет нужную категорию");
-//        System.out.println("В теории это ускорит работу с прогой, но не думаю, что это очень важно");
     }
 
     public void work() {
         String userData = Inputs.inputString();
-        shablonator.doMatch(userData);
+        String[] costFields = shablonator.doMatch(userData);
+        // Если кост прошел проверку на валидность
+        if (Cost.checkCost(costFields))
+            // и был добавлен в базу данных
+            if (insertionCost(new Cost(costFields)) != 0)
+                System.out.println("Все прошло заебись!");
     }
 }
