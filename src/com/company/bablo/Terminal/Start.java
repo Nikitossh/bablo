@@ -1,10 +1,7 @@
-package com.company.bablo.Terminal;//package com.company.bablo.Terminal;
-
-//import com.company.bablo.entity.Categories;
+package com.company.bablo.Terminal;
 
 import com.company.bablo.ConsoleView;
 import com.company.bablo.persistent.DAO;
-
 import java.util.Scanner;
 
 /** *
@@ -21,22 +18,46 @@ public class Start {
      * Выводит основное меню на экран.
      * */
     public void printMainMenu() {
+        clearConsole();
+        System.out.println("    Main Menu");
+        System.out.println();
         System.out.println("* New cost");
         System.out.println("* In this month");
         System.out.println("* Last 10");
         System.out.println("* Details");
         System.out.println("* Preferences");
         System.out.println("* Quit");
+        System.out.println();
+        System.out.println();
+        System.out.println();
+        System.out.println();
+    }
+
+    public static void printWaitAnyKey() {
+        System.out.println("Введите любой символ и нажмите 'Ввод' для выхода в основное меню...");
+        isWaiting();
     }
 
     public static void startApp() {
         Start start = new Start();
-        start.printMainMenu();
-        while (true) {
-            start.doSmth();
-            clearConsole();
-        }
         /** Ожидаем нажатия нужной кнопки, остальные игнорируем*/
+        while (true) {
+            start.printMainMenu();
+            start.doSmth();
+            printWaitAnyKey();
+            //clearConsole();
+        }
+    }
+
+    /** Ожидание нажатия любой кнопки */
+    public static void isWaiting() {
+        Scanner scanner = new Scanner(System.in);
+        String s = scanner.next();
+        while (true) {
+            if (s != null) {
+                break;
+            }
+        }
     }
 
     /** Очистка консоли в Linux */
@@ -51,12 +72,14 @@ public class Start {
 
             // Добавление cost в отдельном классе
             if("n".equals(str) || "N".equals(str)) {
+                clearConsole();
                 ncm.printMenu();
                 ncm.addCost();
                 break;
             }
 
             if("i".equals(str) || "I".equals(str)) {
+                clearConsole();
                 System.out.println("Суммы трат в этом месяце:");
                 ConsoleView.printMonth(DAO.selectionThisMonth());
                 ConsoleView.printTotal(DAO.selectionTotalValuesMonth(0));
@@ -64,7 +87,9 @@ public class Start {
             }
 
             if("l".equals(str) || "L".equals(str)) {
+                clearConsole();
                 System.out.println("Список последних 10 трат:");
+                System.out.println();
                 ConsoleView.printCosts(DAO.selectionLastCosts(10));
                 break;
             }
@@ -77,7 +102,8 @@ public class Start {
 
             // Меню с настройками программы. Неактивно до внедрения работы с файлами
             if("p".equals(str)) {
-                System.out.println("Не работает! Выберите другой пункт меню");
+                clearConsole();
+                System.out.println("Пункт с настройками программы еще не работает! Выберите другой пункт меню");
                 break;
             }
 
