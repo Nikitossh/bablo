@@ -1,8 +1,6 @@
-//package com.company.bablo.Terminal;
+package com.company.bablo.Terminal;//package com.company.bablo.Terminal;
 
 //import com.company.bablo.entity.Categories;
-
-import com.company.bablo.Terminal.NewCostMenu;
 
 import java.util.Scanner;
 

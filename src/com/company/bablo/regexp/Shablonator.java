@@ -11,7 +11,7 @@ import java.util.regex.Pattern;
 
 
 public class Shablonator {
-    // Необходимо сразу подтянуть все категории для сравнения
+    // fetch all categories from db in "category1|category2|category3" view
     private Categories c = new Categories();
 
     /** 100 food shop               цифры       пробел   категория            пробел     комментарий     */
@@ -28,10 +28,8 @@ public class Shablonator {
             result[2] = matcher.group(3);
         }
         else {
-            System.out.println("No matches found.");
+            return result;
         }
-
         return result;
     }
-
 }
