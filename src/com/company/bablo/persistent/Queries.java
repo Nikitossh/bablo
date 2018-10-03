@@ -25,7 +25,7 @@ public class Queries {
     }
 
 
-    static String selectLastCost(int limit) {
+    static String selectLastCosts(int limit) {
         return "SELECT costs.id, category.category, costs.value, costs.comment, date.date " +
                 "FROM costs " +
                 "INNER JOIN category " +
@@ -82,12 +82,6 @@ public class Queries {
                 "AND " +
                 "YEAR(date)=YEAR(NOW()) " +
                 "GROUP BY category;";
-        // За предыдущий месяц.
-//        SELECT category.category, SUM(costs.value) AS value,  budget.amount FROM costs INNER JOIN category
-//        ON costs.category_id=category.id
-//        INNER JOIN budget ON costs.category_id=budget.category_id
-//        INNER JOIN date ON costs.date_id=date.id
-//        WHERE MONTH(date)=MONTH(DATE_ADD(NOW(), INTERVAL -1 MONTH)) AND YEAR(date)=YEAR(NOW()) GROUP BY category;
     }
 
     static final String selectLastMonthByCategory() {

@@ -2,6 +2,9 @@ package com.company.bablo.Terminal;//package com.company.bablo.Terminal;
 
 //import com.company.bablo.entity.Categories;
 
+import com.company.bablo.ConsoleView;
+import com.company.bablo.persistent.DAO;
+
 import java.util.Scanner;
 
 /** *
@@ -26,7 +29,7 @@ public class Start {
         System.out.println("* Quit");
     }
 
-    public static void main(String[] args) {
+    public static void startApp() {
         Start start = new Start();
         start.printMainMenu();
         while (true) {
@@ -41,36 +44,46 @@ public class Start {
         System.out.print("\033\143");
     }
 
-    /** Бесконечный цикл в ожидании ввода одной из букв */
+    /** Бесконечный цикл в ожидании ввода одной из ключевых букв */
     public void doSmth() {
         while (true) {
             String str = scanner.next();
 
-            //
+            // Добавление cost в отдельном классе
             if("n".equals(str) || "N".equals(str)) {
-                ncm.printNewCost();
-                ncm.work();
+                ncm.printMenu();
+                ncm.addCost();
                 break;
             }
-            if("i".equals(str) || "I".equals(str)) {
 
-                System.out.println("in this month");
+            if("i".equals(str) || "I".equals(str)) {
+                System.out.println("Суммы трат в этом месяце:");
+                ConsoleView.printMonth(DAO.selectionThisMonth());
+                ConsoleView.printTotal(DAO.selectionTotalValuesMonth(0));
+                break;
             }
-            if("l".equals(str)) {
-                // Идем в метод создания костов
-                System.out.println("last 10");
+
+            if("l".equals(str) || "L".equals(str)) {
+                System.out.println("Список последних 10 трат:");
+                ConsoleView.printCosts(DAO.selectionLastCosts(10));
+                break;
             }
+
+            // Отдельный класс с детализацией
             if("d".equals(str)) {
-                // Идем в метод создания костов
                 System.out.println("details");
+                break;
             }
+
+            // Меню с настройками программы. Неактивно до внедрения работы с файлами
             if("p".equals(str)) {
-                // Идем в метод создания костов
-                System.out.println("Preferences");
+                System.out.println("Не работает! Выберите другой пункт меню");
+                break;
             }
+
+            // Exit program with status 0
             if("qq".equals(str)) {
-                // Идем в метод создания костов
-                System.out.println("Quitting...");
+                System.out.println("Bye bye!");
                 System.exit(0);
             }
 

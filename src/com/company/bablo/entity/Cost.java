@@ -1,11 +1,12 @@
 package com.company.bablo.entity;
 
 import java.time.LocalDate;
+import java.util.Arrays;
 
 /**
  * Created by nik on 4/12/17.
  * Modified 13/04/18
- * 5f86
+ * Last modified 03.10.2018
  */
 
 public class Cost {
@@ -29,10 +30,15 @@ public class Cost {
         this.date = date;
     }
 
-    /** Check if some values are NULL */
+    /** Check if some values are NULL or equals "" */
     public static boolean checkCost(String[] args) {
+        String[] emptyArray = {"", "", ""};
         if(args[0] != null | args[1] != null | args[2] != null) {
-            System.out.println("Ну по крайней мере поля не пустые");
+            if (Arrays.equals(args, emptyArray)) {
+                System.out.println("Одно из полей введено неверно");
+                return false;
+            }
+            System.out.println("Все поля заполнены");
             return true;
         }
         else

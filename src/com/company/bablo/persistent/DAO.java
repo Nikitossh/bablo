@@ -2,6 +2,8 @@ package com.company.bablo.persistent;
 
 /**
  * Created by nik on 2/21/17.
+ * Class for connecting to database and work with it
+ * todo: вытащить данные для подключения к БД в файл конфигурации
  */
 
 
@@ -70,7 +72,6 @@ public class DAO {
 
 
 
-
     // Далее идет блок выполнения запросов полученных из класса Queries
 
     // Все что связано с датой и временем
@@ -93,7 +94,7 @@ public class DAO {
     // Выборка последних пяти трат
     // Для другого количества меняем limit
     public static ResultSet selectionLastCosts(int limit) {
-        String sql = Queries.selectLastCost(limit);
+        String sql = Queries.selectLastCosts(limit);
         ResultSet rs = executePreparedStatement(createPreparedStatement(sql));
         return rs;
     }
@@ -111,18 +112,6 @@ public class DAO {
         ResultSet rs = executePreparedStatement(createPreparedStatement(sql));
         return rs;
     }
-
-/** Это блок предназначенный для замены этого спаггети */
-    public static PreparedStatement createPS(String sql) {
-        PreparedStatement ps = createPreparedStatement(sql);
-        return ps;
-    }
-
-    public static ResultSet selection(PreparedStatement ps) {
-        ResultSet rs = executePreparedStatement(ps);
-        return rs;
-    }
-/** конец блока */
 
 
     // Сумма всех трат за текущий месяц
