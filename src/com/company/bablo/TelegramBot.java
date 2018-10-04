@@ -5,28 +5,26 @@ import com.company.bablo.regexp.RegularExpressions;
 import com.company.bablo.entity.Cost;
 import com.company.bablo.persistent.DAO;
 import org.telegram.telegrambots.ApiContextInitializer;
-import org.telegram.telegrambots.TelegramBotsApi;
-import org.telegram.telegrambots.api.methods.send.SendMessage;
-import org.telegram.telegrambots.api.objects.Message;
-import org.telegram.telegrambots.api.objects.Update;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
-import org.telegram.telegrambots.exceptions.TelegramApiException;
+import org.telegram.telegrambots.meta.TelegramBotsApi;
+import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.objects.Message;
+import org.telegram.telegrambots.meta.api.objects.Update;
+import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class TelegramBot  extends TelegramLongPollingBot {
+
+public class TelegramBot extends TelegramLongPollingBot {
     private RegularExpressions regularExpressions = new RegularExpressions();
 
-    public static void runBot() {
-                TelegramLongPollingBot bot = new TelegramBot();
-        // Инициализируем и запускаем бота.
+    public static void main(String[] args) {
         ApiContextInitializer.init();
-        TelegramBotsApi telegramBotsApi = new TelegramBotsApi();
-
+        TelegramBotsApi botsApi = new TelegramBotsApi();
 
         try {
-            telegramBotsApi.registerBot(bot);
+            botsApi.registerBot(new TelegramBot());
         } catch (TelegramApiException e) {
             e.printStackTrace();
         }
@@ -68,12 +66,6 @@ public class TelegramBot  extends TelegramLongPollingBot {
             }
         }
 
-        // вывод справки по вводу траты.
-        if (messageText.equals("Ввод трат")) {
-            sendMsg(message, "Ввод трат осуществляется по шаблону \n" +
-                    "100 food shop");
-        }
-
         // Выборка статистики за этот месяц.
         if (messageText.equals("Статистика")) {
             String result = "";
@@ -112,7 +104,7 @@ public class TelegramBot  extends TelegramLongPollingBot {
         sendMessage.setChatId(message.getChatId().toString());
         sendMessage.setText(text);
         try {
-            sendMessage(sendMessage);
+            execute(sendMessage);
         } catch (TelegramApiException e) {
             e.printStackTrace();
         }

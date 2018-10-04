@@ -10,7 +10,7 @@ import java.util.Scanner;
  */
 
 
-public class Start {
+public class Start implements Runnable{
     NewCostMenu ncm = new NewCostMenu();
     Scanner scanner = new Scanner(System.in);
 
@@ -117,4 +117,8 @@ public class Start {
         }
     }
 
+    @Override
+    public void run() {
+        startApp();
+    }
 }
