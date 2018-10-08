@@ -13,7 +13,6 @@ public class ConsoleAux {
         LocalDate today = LocalDate.now();
         LocalDate result;
 
-        //System.out.println("Выберите дату:");
         switch (selector) {
             case 1 :
                 result = today.minusDays(2);

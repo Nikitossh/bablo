@@ -5,6 +5,7 @@ import com.company.bablo.regexp.Shablonator;
 import com.company.bablo.util.Inputs;
 
 import static com.company.bablo.persistent.DAO.insertionCost;
+import static com.company.bablo.persistent.DAO.insertionData;
 
 /**
  * Класс для работы в консоли.
@@ -24,9 +25,13 @@ public class NewCostMenu {
         String userData = Inputs.inputString();
         String[] costFields = shablonator.doMatch(userData);
         // Если кост прошел проверку на валидность
-        if (Cost.checkCost(costFields))
-            // и был добавлен в базу данных
-            if (insertionCost(new Cost(costFields)) != 0)
+        if (Cost.checkCost(costFields)) {
+            // Собираем сущность и добавляем дату
+            Cost cost = new Cost(costFields);
+            insertionData(cost);
+            // и добавляем её в базу данных
+            if (insertionCost(cost) != 0)
                 System.out.println("Cost добавлен в БД.");
+        }
     }
 }

@@ -70,16 +70,12 @@ public class TelegramBot extends TelegramLongPollingBot {
         if (messageText.equals("Статистика")) {
             String result = "";
             String total = "";
-
             try {
                 ResultSet rsTotal = DAO.selectionTotalValuesMonth(0);
-
                 if (rsTotal.next()) {
                     total = rsTotal.getString(1);
                 }
-
                 ResultSet rsCategory = DAO.selectionThisMonth();
-
                 while (rsCategory.next()) {
                     String category = rsCategory.getString(1);
                     String value = rsCategory.getString(2);
