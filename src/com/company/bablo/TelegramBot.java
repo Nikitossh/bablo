@@ -4,6 +4,7 @@ package com.company.bablo;
 import com.company.bablo.regexp.RegularExpressions;
 import com.company.bablo.entity.Cost;
 import com.company.bablo.persistent.DAO;
+import com.company.bablo.regexp.Shablonator;
 import org.telegram.telegrambots.ApiContextInitializer;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.TelegramBotsApi;
@@ -15,9 +16,13 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import static com.company.bablo.persistent.DAO.insertionCost;
+import static com.company.bablo.persistent.DAO.insertionData;
+
 
 public class TelegramBot extends TelegramLongPollingBot {
     private RegularExpressions regularExpressions = new RegularExpressions();
+    private Shablonator shablonator = new Shablonator();
 
     public static void main(String[] args) {
         ApiContextInitializer.init();
@@ -45,29 +50,14 @@ public class TelegramBot extends TelegramLongPollingBot {
     @Override
     public void onUpdateReceived(Update update) {
         // Получаем из update объект message и работаем с ним.
-        Message message = update.getMessage();
+        Message message = new Message();
+        if (update.hasMessage()) {
+            message = update.getMessage();
+        }
         // Получаем строку из message.
         String messageText = message.getText();
 
-        // Обрабатываем строку на предмет совпадения с регулярным выражением.
-        // Разбиваем на части, проверяем их и добавляем в БД.
-        if (regularExpressions.isMatch(messageText)) {
-            System.out.println("Найдено совпадение с регуляркой.");
-            String[] costFields = regularExpressions.splitMessageText(messageText);
-            System.out.println("Регулярка разбита на части и они переданы на проверку");
-            System.out.print("value: " + costFields[0] + "  category: " + costFields[1] + "  comment: " + costFields[2]);
-            Cost.checkCost(costFields);
-            Cost cost = new Cost(costFields);
-            // Добавляем дату, если не добавить, то будет NULL в БД
-            DAO.insertionData(cost);
-            System.out.println(cost);
-            if (DAO.insertionCost(cost) != 0) {
-                sendMsg(message, "Добавлен в базу данных.");
-            }
-        }
-
-        // Выборка статистики за этот месяц.
-        if (messageText.equals("Статистика")) {
+        if (messageText.toLowerCase().equals("cтатистика")) {
             String result = "";
             String total = "";
             try {
@@ -90,7 +80,28 @@ public class TelegramBot extends TelegramLongPollingBot {
 
             System.out.print(result);
             sendMsg(message, result);
+        }
 
+        else if (messageText.matches(shablonator.TODAY)) {
+            String[] costFields = shablonator.doMatch(messageText);
+            if (Cost.checkCost(costFields)) {
+                Cost cost = new Cost(costFields);
+                insertionData(cost);
+                if (insertionCost(cost) != 0)
+                    sendMsg(message, "Платеж: " + cost.toString() + " добавлен");
+            }
+        }
+
+        else if (messageText.matches(shablonator.YESTERDAY)) {
+            
+        }
+
+        // Выборка статистики за этот месяц.
+
+
+        /** Если не совпало ни с одним шаблоном  */
+        else {
+            System.out.println("Не совпало ни с чем");
         }
     }
 

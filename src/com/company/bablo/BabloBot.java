@@ -13,8 +13,9 @@ public class BabloBot{
 
     public static void main(String[] args) {
         //startThread.run();
-        //telegramBot.runBot();
-        consoleController.run();
+        //telegramBot.run();
+        startThread.run();
+        //consoleController.run();
     }
 
 
