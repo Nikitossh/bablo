@@ -1,7 +1,5 @@
 package com.company.bablo;
 
-
-import com.company.bablo.regexp.RegularExpressions;
 import com.company.bablo.entity.Cost;
 import com.company.bablo.persistent.DAO;
 import com.company.bablo.regexp.Shablonator;
@@ -15,17 +13,16 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDate;
 
 import static com.company.bablo.persistent.DAO.insertionCost;
 import static com.company.bablo.persistent.DAO.insertionData;
 
 
 public class TelegramBot extends TelegramLongPollingBot {
-    private RegularExpressions regularExpressions = new RegularExpressions();
     private Shablonator shablonator = new Shablonator();
 
     public static void main(String[] args) {
+        // todo: Сделать логирование всех событий для отладки
         ApiContextInitializer.init();
         TelegramBotsApi botsApi = new TelegramBotsApi();
 
@@ -59,9 +56,9 @@ public class TelegramBot extends TelegramLongPollingBot {
         String messageText = message.getText();
         System.out.println(messageText);
 
-        if (messageText.equals("stat")) {
-            System.out.println("Какого хуя!");
-            String result = "";
+        if (messageText.toLowerCase().equals("stat")) {
+            // todo: Вынести это в отдельный метод класса Statistic
+            StringBuilder result = new StringBuilder();
             String total = "";
             try {
                 ResultSet rsTotal = DAO.selectionTotalValuesMonth(0);
@@ -73,17 +70,17 @@ public class TelegramBot extends TelegramLongPollingBot {
                     String category = rsCategory.getString(1);
                     String value = rsCategory.getString(2);
 
-                    result += category + " " + value + "\t "  + "\n";
+                    result.append(category).append(" ").append(value).append("\t ").append("\n");
                 }
-                result += "Total: \n" + total;
+                result.append("Total: \n").append(total);
             } catch (SQLException e) {
                 e.printStackTrace();
             }
 
-            System.out.print(result);
-            sendMsg(message, result);
+            sendMsg(message, result.toString());
         }
 
+        // todo: сделать как-то покрасивее
         else if (messageText.matches(shablonator.TODAY) ||
                 messageText.matches(shablonator.YESTERDAY) ||
                 messageText.matches(shablonator.BEFORE_YESTERDAY) ||
@@ -98,10 +95,9 @@ public class TelegramBot extends TelegramLongPollingBot {
             }
         }
 
-
         /** Если не совпало ни с одним шаблоном  */
         else {
-            System.out.println("Не совпало ни с чем");
+            sendMsg(message, "У меня нет инструкций на этот счет. Вызовите help");
         }
     }
 

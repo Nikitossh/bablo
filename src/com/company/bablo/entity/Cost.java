@@ -1,13 +1,14 @@
 package com.company.bablo.entity;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
+
+import static com.company.bablo.entity.Date.selectDate;
 
 /**
  * Created by nik on 4/12/17.
  * Modified 13/04/18
- * Last modified 03.10.2018
+ * Last modified 15.10.2018
  */
 
 public class Cost {
@@ -16,7 +17,7 @@ public class Cost {
     private String comment;
     private LocalDate date;
 
-    /** This constructor for creating with regexp/RegularExpression  */
+    /** This constructor for creating with regexp  */
     public Cost(String fields[]) {
         this.value = Integer.parseInt(fields[1]);
         this.category = fields[2];
@@ -24,26 +25,6 @@ public class Cost {
         this.date = selectDate(fields[0]);
     }
 
-    public static LocalDate selectDate(String str) {
-        LocalDate result = null;
-        if ("y".equals(str.toLowerCase()))
-            return LocalDate.now().minusDays(1);
-        else if ("yy".equals(str.toLowerCase()))
-            return LocalDate.now().minusDays(2);
-        else if (str.isEmpty())
-            return LocalDate.now();
-        else {
-            try {
-                str += "." + LocalDate.now().getYear();
-                DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd.MM.yyyy");
-                result = LocalDate.parse(str,dtf);
-                System.out.println(result);
-            } catch (Exception e) {
-                return null;
-            }
-            return result;
-        }
-    }
     public Cost(){};
 
     public Cost(int value, String category, String comment, LocalDate date) {
@@ -61,7 +42,6 @@ public class Cost {
                 System.out.println("Одно из полей введено неверно");
                 return false;
             }
-            System.out.println("Все поля заполнены");
             return true;
         }
         else

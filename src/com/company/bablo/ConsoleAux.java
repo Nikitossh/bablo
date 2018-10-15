@@ -27,7 +27,6 @@ public class ConsoleAux {
                 result = today;
                 break;
         }
-
         System.out.println("Выбрана дата:");
         System.out.println(result);
         return result;

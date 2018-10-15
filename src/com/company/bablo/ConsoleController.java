@@ -10,7 +10,7 @@ import java.time.LocalDate;
 
 import static com.company.bablo.ConsoleAux.selectDate;
 import static com.company.bablo.ConsoleView.*;
-import static com.company.bablo.entity.Categories.getListCategories;
+import static com.company.bablo.entity.Categories.getCategoriesList;
 import static com.company.bablo.entity.Cost.*;
 import static com.company.bablo.persistent.DAO.getCategoriesRS;
 import static com.company.bablo.persistent.DAO.selectionLastMonthByCategory;
@@ -41,7 +41,7 @@ public class ConsoleController implements Runnable{
                 System.out.println("Введите сумму траты");
                 int value = Inputs.inputInt();
                 ConsoleView.printSelectCategory();
-                ConsoleView.printListCategories(getListCategories(getCategoriesRS()));
+                ConsoleView.printListCategories(getCategoriesList(getCategoriesRS()));
                 String category = Inputs.inputString();
                 // Запрашиваем комментарий
                 ConsoleView.printWriteComment();

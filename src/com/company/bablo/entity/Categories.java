@@ -8,7 +8,7 @@ import java.util.*;
 
 /**
  * Created by nik on 6/2/17.
- * Modified by nik 02/10/18
+ * Modified by nik 15.10.2018
  * При создании экземпляра класса, создается список Map, конструктор которого опрашивает БД
  * и на основе ответа заполняет список.
  */
@@ -34,7 +34,7 @@ public class Categories {
     }
 
     /** Get categories List */
-    public static List<String> getListCategories(ResultSet resultSet) {
+    public static List<String> getCategoriesList(ResultSet resultSet) {
         ArrayList<String> listCategories = new ArrayList<>();
         try {
             while (resultSet.next()) {
@@ -60,11 +60,4 @@ public class Categories {
         }
         return result;
     }
-
-    /** Testing class */
-    public static void main(String[] args) {
-        Categories categories = new Categories();
-        System.out.println(categories);
-    }
-
 }
