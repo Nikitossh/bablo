@@ -1,6 +1,7 @@
 package com.company.bablo.entity;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 
 /**
@@ -17,11 +18,33 @@ public class Cost {
 
     /** This constructor for creating with regexp/RegularExpression  */
     public Cost(String fields[]) {
-        this.value = Integer.parseInt(fields[0]);
-        this.category = fields[1];
-        this.comment = fields[2];
-        this.date = LocalDate.now();
+        this.value = Integer.parseInt(fields[1]);
+        this.category = fields[2];
+        this.comment = fields[3];
+        this.date = selectDate(fields[0]);
     }
+
+    public static LocalDate selectDate(String str) {
+        LocalDate result = null;
+        if ("y".equals(str.toLowerCase()))
+            return LocalDate.now().minusDays(1);
+        else if ("yy".equals(str.toLowerCase()))
+            return LocalDate.now().minusDays(2);
+        else if (str.isEmpty())
+            return LocalDate.now();
+        else {
+            try {
+                str += "." + LocalDate.now().getYear();
+                DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+                result = LocalDate.parse(str,dtf);
+                System.out.println(result);
+            } catch (Exception e) {
+                return null;
+            }
+            return result;
+        }
+    }
+    public Cost(){};
 
     public Cost(int value, String category, String comment, LocalDate date) {
         this.value = value;

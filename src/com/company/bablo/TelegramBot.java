@@ -15,6 +15,7 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 
 import static com.company.bablo.persistent.DAO.insertionCost;
 import static com.company.bablo.persistent.DAO.insertionData;
@@ -56,8 +57,10 @@ public class TelegramBot extends TelegramLongPollingBot {
         }
         // Получаем строку из message.
         String messageText = message.getText();
+        System.out.println(messageText);
 
-        if (messageText.toLowerCase().equals("cтатистика")) {
+        if (messageText.equals("stat")) {
+            System.out.println("Какого хуя!");
             String result = "";
             String total = "";
             try {
@@ -69,8 +72,7 @@ public class TelegramBot extends TelegramLongPollingBot {
                 while (rsCategory.next()) {
                     String category = rsCategory.getString(1);
                     String value = rsCategory.getString(2);
-                    /** Для вывода бюджета раскомменить строку ниже и amount в result*/
-                    //String amount = rsCategory.getString(3);
+
                     result += category + " " + value + "\t "  + "\n";
                 }
                 result += "Total: \n" + total;
@@ -82,21 +84,19 @@ public class TelegramBot extends TelegramLongPollingBot {
             sendMsg(message, result);
         }
 
-        else if (messageText.matches(shablonator.TODAY)) {
-            String[] costFields = shablonator.doMatch(messageText);
+        else if (messageText.matches(shablonator.TODAY) ||
+                messageText.matches(shablonator.YESTERDAY) ||
+                messageText.matches(shablonator.BEFORE_YESTERDAY) ||
+                messageText.matches(shablonator.WITH_DATE)) {
+            String[] costFields = shablonator.extractAllData(messageText);
             if (Cost.checkCost(costFields)) {
                 Cost cost = new Cost(costFields);
+                sendMsg(message, "ВОТ: " + cost.toString());
                 insertionData(cost);
                 if (insertionCost(cost) != 0)
                     sendMsg(message, "Платеж: " + cost.toString() + " добавлен");
             }
         }
-
-        else if (messageText.matches(shablonator.YESTERDAY)) {
-            
-        }
-
-        // Выборка статистики за этот месяц.
 
 
         /** Если не совпало ни с одним шаблоном  */
