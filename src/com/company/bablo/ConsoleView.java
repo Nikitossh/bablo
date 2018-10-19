@@ -148,10 +148,4 @@ public class ConsoleView {
         System.out.println();
     }
 
-    public static void main(String[] args) {
-        ConsoleView.printMonth(DAO.selectionThisMonth());
-        ConsoleView.printTotal(DAO.selectionTotalValuesMonth(1));
-        ConsoleView.printInCategory(DAO.selectionMonthCostsInCategory("car"));
-        ConsoleView.printCosts(DAO.selectionLastCosts(5));
-    }
 }
