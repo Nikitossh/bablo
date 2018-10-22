@@ -1,7 +1,5 @@
 package com.company.bablo;
 
-import com.company.bablo.persistent.DAO;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Formatter;

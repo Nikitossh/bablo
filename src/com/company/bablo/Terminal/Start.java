@@ -74,7 +74,7 @@ public class Start implements Runnable{
             if("n".equals(str) || "N".equals(str)) {
                 clearConsole();
                 ncm.printMenu();
-                ncm.addCost();
+                ncm.addTerminalCost();
                 break;
             }
 

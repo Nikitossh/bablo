@@ -4,8 +4,7 @@ import com.company.bablo.entity.Cost;
 import com.company.bablo.regexp.Shablonator;
 import com.company.bablo.util.Inputs;
 
-import static com.company.bablo.persistent.DAO.insertionCost;
-import static com.company.bablo.persistent.DAO.insertionData;
+import static com.company.bablo.entity.Cost.addCost;
 
 /**
  * Класс для работы в консоли.
@@ -21,17 +20,14 @@ public class NewCostMenu {
         System.out.println();
     }
 
-    public void addCost() {
+    public void addTerminalCost() {
         String userData = Inputs.inputString();
         String[] costFields = shablonator.extractAllData(userData);
         // Если кост прошел проверку на валидность
         if (Cost.checkCost(costFields)) {
             // Собираем сущность и добавляем дату
             Cost cost = new Cost(costFields);
-            insertionData(cost);
-            // и добавляем её в базу данных
-            if (insertionCost(cost) != 0)
-                System.out.println("Cost добавлен в БД.");
-        }
+            addCost(cost);
     }
+}
 }

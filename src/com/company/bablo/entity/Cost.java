@@ -4,6 +4,8 @@ import java.time.LocalDate;
 import java.util.Arrays;
 
 import static com.company.bablo.entity.Date.selectDate;
+import static com.company.bablo.persistent.DAO.insertionCost;
+import static com.company.bablo.persistent.DAO.insertionData;
 
 /**
  * Created by nik on 4/12/17.
@@ -34,7 +36,16 @@ public class Cost {
         this.date = date;
     }
 
+    // todo: Сделать класс абстрактным, реализовать разные методы добавления из ТелеграммБота и консоли
+    public static void addCost(Cost cost) {
+        // Сначала всегда добавляем дату
+        insertionData(cost);
+        if (insertionCost(cost) != 0)
+            System.out.println("Cost добавлен в БД.");
+    }
+
     /** Check if some values are NULL or equals "" */
+    // todo: Проверять сам cost, а не предварительные поля. Это вынести в другую проверку, перед созданием costa
     public static boolean checkCost(String[] args) {
         String[] emptyArray = {"", "", ""};
         if(args[0] != null | args[1] != null | args[2] != null) {
