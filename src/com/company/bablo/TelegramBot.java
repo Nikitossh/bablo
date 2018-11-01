@@ -22,13 +22,14 @@ import static com.company.bablo.persistent.DAO.insertionData;
 public class TelegramBot extends TelegramLongPollingBot {
     private static String PROXY_HOST = "ytajm.tgproxy.me";
     private static Integer PROXY_PORT = 1080;
+    private static String BOT_USERNAME = "myBabloBot";
+    private static String BOT_TOKEN = "355265619:AAHIC3Gq3-tY4Wu_10Ifc9c8JIKBtBa1qvg";
+    private Shablonator shablonator = new Shablonator();
 
-
+    // Переопределяем конструктор для использования опций, в частности для proxy
     protected TelegramBot(DefaultBotOptions botOptions) {
         super(botOptions);
     }
-
-    private Shablonator shablonator = new Shablonator();
 
     public static void main(String[] args) {
         // todo: Сделать логирование всех событий для отладки
@@ -49,15 +50,14 @@ public class TelegramBot extends TelegramLongPollingBot {
 
     @Override
     public String getBotUsername() {
-        return "myBabloBot";
+        return BOT_USERNAME;
     }
 
     @Override
     public String getBotToken() {
-        return "355265619:AAHIC3Gq3-tY4Wu_10Ifc9c8JIKBtBa1qvg";
+        return BOT_TOKEN;
     }
 
-    // Основной рабочий метод бота.
     // При получении объекта update, бот отрабатывает данный метод.
     @Override
     public void onUpdateReceived(Update update) {
