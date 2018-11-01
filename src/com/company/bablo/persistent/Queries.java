@@ -48,20 +48,6 @@ public class Queries {
                 "YEAR(date)=YEAR(NOW());";
     }
 
-    static String selectLastMonthCosts() {
-        return "SELECT SUM(costs.value) AS value " +
-                "FROM costs " +
-                "INNER JOIN category " +
-                "ON costs.category_id=category.id " +
-                "INNER JOIN date " +
-                "ON costs.date_id=date.id " +
-                "WHERE MONTH(date)=MONTH(DATE_ADD(NOW(), INTERVAL -1 MONTH))" +
-                "AND " +
-                "YEAR(date)=YEAR(NOW());";
-    }
-
-
-
 // Дата и время
     static String insertNewDate(Cost cost) {
     String date = "'" + cost.getDate().toString() + "'";

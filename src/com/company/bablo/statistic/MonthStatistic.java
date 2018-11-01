@@ -2,21 +2,18 @@ package com.company.bablo.statistic;
 
 import com.company.bablo.persistent.DAO;
 
-/**
- * Данный класс содержит все необходимое для вывода месячной статистики в telegramBot
-  TODO: Выводить данные о всех ошибочных записях в месяце.
-  Для этого выборка по БД с поиском NULL в категории, дате или значении.
-  Возможно еще лучше поставить NOT NULL для этих полей в таблице.
- */
-
 public class MonthStatistic {
+    /** Статистика за этот месяц для телеграмма */
 
-    public String printMonthStatistic() {
-        String result;
-        result = DAO.selectionThisMonth().toString();
+    public String monthStatistic() {
+        String result = DAO.selectionThisMonth().toString();
 
         return  result;
     }
 
+    public static void main(String[] args) {
+        MonthStatistic ms = new MonthStatistic();
+        System.out.println(ms.monthStatistic());
+    }
 
 }

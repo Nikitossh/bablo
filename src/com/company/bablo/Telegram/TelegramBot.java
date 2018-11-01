@@ -1,7 +1,9 @@
-package com.company.bablo;
+package com.company.bablo.Telegram;
 
 import com.company.bablo.entity.Cost;
 import com.company.bablo.persistent.DAO;
+import com.company.bablo.persistent.Queries;
+import com.company.bablo.persistent.Query;
 import com.company.bablo.regexp.Shablonator;
 import org.telegram.telegrambots.ApiContextInitializer;
 import org.telegram.telegrambots.bots.DefaultBotOptions;
@@ -70,7 +72,7 @@ public class TelegramBot extends TelegramLongPollingBot {
         String messageText = message.getText();
         System.out.println(messageText);
 
-        if (messageText.toLowerCase().equals("stat")) {
+        if (messageText.toLowerCase().equals("/stat")) {
             // todo: Вынести это в отдельный метод класса Statistic
             StringBuilder result = new StringBuilder();
             String total = "";
@@ -93,6 +95,24 @@ public class TelegramBot extends TelegramLongPollingBot {
 
             sendMsg(message, result.toString());
         }
+
+        if (messageText.toLowerCase().equals("/statcat")){
+            StringBuilder result = new StringBuilder();
+            try {
+                ResultSet rsStatCat = Query.selectData(DAO.createPreparedStatement(Queries.selectMonthByComments()));
+                while (rsStatCat.next()) {
+                    String sum = rsStatCat.getString(1);
+                    String cat = rsStatCat.getString(2);
+                    String com = rsStatCat.getString(3);
+                    result.append(cat).append("\t").append(com).append("\t").append(sum).append("\n");
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            System.out.println(result);
+            sendMsg(message, result.toString());
+        }
+
 
         // todo: сделать как-то покрасивее
         else if (messageText.matches(shablonator.TODAY) ||
