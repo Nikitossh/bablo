@@ -12,6 +12,7 @@ public class Query {
     }
 
     public static ResultSet selectData(PreparedStatement ps) {
+
         return DAO.executePreparedStatement(ps);
     }
 }

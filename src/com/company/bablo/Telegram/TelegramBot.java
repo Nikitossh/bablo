@@ -64,27 +64,25 @@ public class TelegramBot extends TelegramLongPollingBot {
     // При получении объекта update, бот отрабатывает данный метод.
     @Override
     public void onUpdateReceived(Update update) {
-        // Получаем из update объект message и работаем с ним.
+        /* Получаем текст из сообщения */
         Message message = new Message();
-        if (update.hasMessage()) {
+        if (update.hasMessage())
             message = update.getMessage();
-        }
-        // Получаем строку из message.
         String messageText = message.getText();
-        // todo: Это в лог, а не в консоль.
-        System.out.println(messageText);
 
+        /* Теперь сверяем полученное сообщение и обрабатываем его
+          Ниже всё что связано со статистикой */
         if (messageText.toLowerCase().equals("/stat")) {
             String monthStat = messageHandler.getStat();
             sendMsg(message, monthStat);
         }
 
-        else if (messageText.toLowerCase().equals("/statcat")){
+        else if (messageText.toLowerCase().equals("/statcom")){
             String monthStatComment = messageHandler.getStatComment();
             sendMsg(message, monthStatComment);
         }
 
-
+        /* А здесь добавление новых трат */
         // todo: сделать как-то покрасивее
         else if (messageText.matches(shablonator.TODAY) ||
                 messageText.matches(shablonator.YESTERDAY) ||
@@ -100,12 +98,13 @@ public class TelegramBot extends TelegramLongPollingBot {
             }
         }
 
-        /** Если не совпало ни с одним шаблоном  */
+        /* Если не совпало ни с одним шаблоном  */
         else {
-            sendMsg(message, "У меня нет инструкций на этот счет. Вызовите help");
+            sendMsg(message, "У меня нет инструкций на этот счет. Вызовите /help");
         }
     }
 
+    // Шлём в телеграмм текст
     private void sendMsg(Message message, String text) {
         SendMessage sendMessage = new SendMessage();
         sendMessage.enableMarkdown(true);

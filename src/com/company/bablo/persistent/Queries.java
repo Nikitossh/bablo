@@ -36,7 +36,7 @@ public class Queries {
                 "LIMIT " + limit + ";";
     }
 
-    static String selectMonthTotalValueOfCosts(int interval) {
+    static String selectMonthTotal(int interval) {
         return "SELECT SUM(costs.value) AS value " +
                 "FROM costs " +
                 "INNER JOIN category " +
@@ -48,6 +48,34 @@ public class Queries {
                 "YEAR(date)=YEAR(NOW());";
     }
 
+
+    // Выборка за месяц по категории, сгруппированная по комментам.
+    // Используется как case 7 в ConsoleController
+    static String selectMonthOneCategory(String category) {
+        return "SELECT category.category, SUM(costs.value), costs.comment AS comment FROM costs " +
+                "INNER JOIN category ON costs.category_id = category.id " +
+                "INNER JOIN date ON costs.date_id = date.id " +
+                "WHERE MONTH (date) = MONTH(DATE_ADD(NOW(), INTERVAL - 1 MONTH)) " +
+                "AND YEAR (date) = YEAR(NOW()) " +
+                "AND category='" + category + "' " +
+                "GROUP BY comment " +
+                "ORDER BY value;";
+    }
+
+    // Выборка за месяц для всех категорий, сгруппированная по комментам.
+    // Используется как case 9 в ConsoleController
+    // Используется в messageHandler.getStatComment()
+    public static String selectMonthByComments() {
+        return "select SUM(value), category, comment " +
+                "from costs " +
+                "INNER JOIN date ON date_id=date.id " +
+                "INNER JOIN category ON category_id=category.id " +
+                "where YEAR(date)=YEAR( NOW()) " +
+                "AND MONTH(date)=MONTH(DATE_ADD(NOW(), INTERVAL -1 MONTH)) " +
+                "GROUP BY comment " +
+                "ORDER BY category;";
+    }
+
 // Дата и время
     static String insertNewDate(Cost cost) {
     String date = "'" + cost.getDate().toString() + "'";
@@ -55,6 +83,7 @@ public class Queries {
         return "INSERT IGNORE INTO date(date) VALUES (" + date + ");";
     }
 
+    /** todo: Эти два надо объеденить */
     static String selectThisMonth() {
         return "SELECT category.category, SUM(costs.value) AS value,  budget.amount " +
                 "FROM costs " +
@@ -70,13 +99,21 @@ public class Queries {
                 "GROUP BY category;";
     }
 
-    static final String selectLastMonthByCategory() {
-        return "SELECT category.category, SUM(costs.value) AS value,  budget.amount FROM costs INNER JOIN category " +
+    static final String selectLastMonth() {
+        return "SELECT category.category, SUM(costs.value) AS value,  budget.amount" +
+                " FROM costs " +
+                "INNER JOIN category " +
                 "ON costs.category_id=category.id " +
-                "INNER JOIN budget ON costs.category_id=budget.category_id " +
-                "INNER JOIN date ON costs.date_id=date.id " +
-                "WHERE MONTH(date)=MONTH(DATE_ADD(NOW(), INTERVAL -1 MONTH)) AND YEAR(date)=YEAR(NOW()) GROUP BY category;";
+                "INNER JOIN budget " +
+                "ON costs.category_id=budget.category_id " +
+                "INNER JOIN date " +
+                "ON costs.date_id=date.id " +
+                "WHERE MONTH(date)=MONTH(DATE_ADD(NOW(), INTERVAL -1 MONTH)) " +
+                "AND " +
+                "YEAR(date)=YEAR(NOW()) " +
+                "GROUP BY category;";
     }
+    /** */
 
 
 // Категории
@@ -90,28 +127,4 @@ public class Queries {
         return "INSERT INTO category(category) VALUES ('" + category + "');";
     }
 
-    // Выборка за месяц по одной категории, просуммированная по одинаковым комментам.
-    static String selectMonthByCategory(String category) {
-        return "SELECT category.category, SUM(costs.value), costs.comment AS comment FROM costs " +
-        "INNER JOIN category ON costs.category_id = category.id " +
-        "INNER JOIN date ON costs.date_id = date.id " +
-        "WHERE MONTH (date) = MONTH(DATE_ADD(NOW(), INTERVAL - 1 MONTH)) " +
-        "AND YEAR (date) = YEAR(NOW()) " +
-        "AND category='" + category + "' " +
-        "GROUP BY comment " +
-        "ORDER BY value;";
-    }
-
-    // Это для всех категорий
-    // ПОка использовал только вручную для сбора всех трат за прошедшие месяцы.
-    public static String selectMonthByComments() {
-        return "select SUM(value), category, comment " +
-                "from costs " +
-                "INNER JOIN date ON date_id=date.id " +
-                "INNER JOIN category ON category_id=category.id " +
-                "where YEAR(date)=YEAR( NOW()) " +
-                "AND MONTH(date)=MONTH(DATE_ADD(NOW(), INTERVAL -1 MONTH)) " +
-                "GROUP BY comment " +
-                "ORDER BY category;";
-    }
 }

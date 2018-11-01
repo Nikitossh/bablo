@@ -8,6 +8,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class MessageHandler {
+    /*  */
     public String getStat() {
         StringBuilder result = new StringBuilder();
         String total = "";
@@ -46,6 +47,7 @@ public class MessageHandler {
         }
         return result.toString();
     }
+
 }
 
 

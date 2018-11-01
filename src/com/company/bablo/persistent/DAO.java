@@ -104,7 +104,7 @@ public class DAO {
 
 
     public static ResultSet selectionLastMonthByCategory() {
-        String sql = Queries.selectLastMonthByCategory();
+        String sql = Queries.selectLastMonth();
         ResultSet rs = executePreparedStatement(createPreparedStatement(sql));
         return rs;
     }
@@ -112,7 +112,7 @@ public class DAO {
 
     // Сумма всех трат за текущий месяц
     public static ResultSet selectionTotalValuesMonth(int interval) {
-        String sql = Queries.selectMonthTotalValueOfCosts(interval);
+        String sql = Queries.selectMonthTotal(interval);
         ResultSet rs = executePreparedStatement(createPreparedStatement(sql));
         return rs;
     }
@@ -135,7 +135,7 @@ public class DAO {
 
     // Получение всех трат за прыдущий месяц в указанной категории
     public static ResultSet selectionMonthCostsInCategory(String category) {
-        String sql = Queries.selectMonthByCategory(category);
+        String sql = Queries.selectMonthOneCategory(category);
         ResultSet rs = executePreparedStatement(createPreparedStatement(sql));
         return rs;
     }
