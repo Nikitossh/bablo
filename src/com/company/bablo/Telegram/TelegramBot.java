@@ -27,6 +27,7 @@ public class TelegramBot extends TelegramLongPollingBot {
     private static String BOT_USERNAME = "myBabloBot";
     private static String BOT_TOKEN = "355265619:AAHIC3Gq3-tY4Wu_10Ifc9c8JIKBtBa1qvg";
     private Shablonator shablonator = new Shablonator();
+    MessageHandler messageHandler = new MessageHandler();
 
     // Переопределяем конструктор для использования опций, в частности для proxy
     protected TelegramBot(DefaultBotOptions botOptions) {
@@ -70,47 +71,17 @@ public class TelegramBot extends TelegramLongPollingBot {
         }
         // Получаем строку из message.
         String messageText = message.getText();
+        // todo: Это в лог, а не в консоль.
         System.out.println(messageText);
 
         if (messageText.toLowerCase().equals("/stat")) {
-            // todo: Вынести это в отдельный метод класса Statistic
-            StringBuilder result = new StringBuilder();
-            String total = "";
-            try {
-                ResultSet rsTotal = DAO.selectionTotalValuesMonth(0);
-                if (rsTotal.next()) {
-                    total = rsTotal.getString(1);
-                }
-                ResultSet rsCategory = DAO.selectionThisMonth();
-                while (rsCategory.next()) {
-                    String category = rsCategory.getString(1);
-                    String value = rsCategory.getString(2);
-
-                    result.append(category).append(" ").append(value).append("\t ").append("\n");
-                }
-                result.append("Total: \n").append(total);
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-
-            sendMsg(message, result.toString());
+            String monthStat = messageHandler.getStat();
+            sendMsg(message, monthStat);
         }
 
-        if (messageText.toLowerCase().equals("/statcat")){
-            StringBuilder result = new StringBuilder();
-            try {
-                ResultSet rsStatCat = Query.selectData(DAO.createPreparedStatement(Queries.selectMonthByComments()));
-                while (rsStatCat.next()) {
-                    String sum = rsStatCat.getString(1);
-                    String cat = rsStatCat.getString(2);
-                    String com = rsStatCat.getString(3);
-                    result.append(cat).append("\t").append(com).append("\t").append(sum).append("\n");
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-            System.out.println(result);
-            sendMsg(message, result.toString());
+        else if (messageText.toLowerCase().equals("/statcat")){
+            String monthStatComment = messageHandler.getStatComment();
+            sendMsg(message, monthStatComment);
         }
 
 
