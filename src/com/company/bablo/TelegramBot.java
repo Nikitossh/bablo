@@ -4,7 +4,9 @@ import com.company.bablo.entity.Cost;
 import com.company.bablo.persistent.DAO;
 import com.company.bablo.regexp.Shablonator;
 import org.telegram.telegrambots.ApiContextInitializer;
+import org.telegram.telegrambots.bots.DefaultBotOptions;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
+import org.telegram.telegrambots.meta.ApiContext;
 import org.telegram.telegrambots.meta.TelegramBotsApi;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
@@ -17,17 +19,29 @@ import java.sql.SQLException;
 import static com.company.bablo.persistent.DAO.insertionCost;
 import static com.company.bablo.persistent.DAO.insertionData;
 
-
 public class TelegramBot extends TelegramLongPollingBot {
+    private static String PROXY_HOST = "ytajm.tgproxy.me";
+    private static Integer PROXY_PORT = 1080;
+
+
+    protected TelegramBot(DefaultBotOptions botOptions) {
+        super(botOptions);
+    }
+
     private Shablonator shablonator = new Shablonator();
 
     public static void main(String[] args) {
         // todo: Сделать логирование всех событий для отладки
-        ApiContextInitializer.init();
-        TelegramBotsApi botsApi = new TelegramBotsApi();
-
         try {
-            botsApi.registerBot(new TelegramBot());
+            ApiContextInitializer.init();
+            TelegramBotsApi botsApi = new TelegramBotsApi();
+            // Set up Http proxy
+            DefaultBotOptions botOptions = ApiContext.getInstance(DefaultBotOptions.class);
+            botOptions.setProxyHost(PROXY_HOST);
+            botOptions.setProxyPort(PROXY_PORT);
+            botOptions.setProxyType(DefaultBotOptions.ProxyType.SOCKS5);
+
+            botsApi.registerBot(new TelegramBot(botOptions));
         } catch (TelegramApiException e) {
             e.printStackTrace();
         }
