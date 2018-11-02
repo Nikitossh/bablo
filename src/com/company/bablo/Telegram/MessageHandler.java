@@ -7,17 +7,21 @@ import com.company.bablo.persistent.Query;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import static com.company.bablo.persistent.DAO.*;
+
 public class MessageHandler {
+
+
     /*  */
     public String getStat() {
         StringBuilder result = new StringBuilder();
         String total = "";
         try {
-            ResultSet rsTotal = DAO.selectionTotalValuesMonth(0);
+            ResultSet rsTotal = selectionTotalValuesMonth(0);
             if (rsTotal.next()) {
                 total = rsTotal.getString(1);
             }
-            ResultSet rsCategory = DAO.selectionThisMonth();
+            ResultSet rsCategory = selectionThisMonth();
             while (rsCategory.next()) {
                 String category = rsCategory.getString(1);
                 String value = rsCategory.getString(2);

@@ -55,7 +55,7 @@ public class DAO {
         return resultSet;
     }
 
-    // Выполняет INSERT, UPDATE или DELETE и возвращает какое-то число.
+    // Выполняет INSERT, UPDATE или DELETE и возвращает число.
     protected static int executePreparedUpdate(PreparedStatement preparedStatement) {
         int result = 0;
 
