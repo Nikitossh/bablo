@@ -48,6 +48,16 @@ public class MessageHandler {
         return result.toString();
     }
 
+    public String getHelp() {
+        return "Доступные команды: \n /stat\t Статистика за этот месяц" +
+                "\n /statcom\t Сгрупированная по комментам" +
+                "\n /help\t Вызов этой справки" +
+                "\n Добавление трат запросом вида:" +
+                "\n 200 food shop\t Добавление траты сегодня" +
+                "\n y(y) 200 food shop \t вчера(позавчера)" +
+                "\n 12.10 199 car fuel \t за 12 октября этого года";
+    }
+
 }
 
 

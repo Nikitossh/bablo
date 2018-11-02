@@ -22,7 +22,7 @@ import static com.company.bablo.persistent.DAO.insertionCost;
 import static com.company.bablo.persistent.DAO.insertionData;
 
 public class TelegramBot extends TelegramLongPollingBot {
-    private static String PROXY_HOST = "ytajm.tgproxy.me";
+    private static String PROXY_HOST = "rfckc.teletype.live";
     private static Integer PROXY_PORT = 1080;
     private static String BOT_USERNAME = "myBabloBot";
     private static String BOT_TOKEN = "355265619:AAHIC3Gq3-tY4Wu_10Ifc9c8JIKBtBa1qvg";
@@ -80,6 +80,12 @@ public class TelegramBot extends TelegramLongPollingBot {
         else if (messageText.toLowerCase().equals("/statcom")){
             String monthStatComment = messageHandler.getStatComment();
             sendMsg(message, monthStatComment);
+        }
+
+        /* Это общая справка */
+        else if(messageText.toLowerCase().equals("/help")) {
+            String help = messageHandler.getHelp();
+            sendMsg(message, help);
         }
 
         /* А здесь добавление новых трат */
