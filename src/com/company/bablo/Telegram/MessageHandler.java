@@ -11,7 +11,6 @@ import static com.company.bablo.persistent.DAO.*;
 
 public class MessageHandler {
 
-
     /*  */
     public String getStat() {
         StringBuilder result = new StringBuilder();
@@ -41,9 +40,9 @@ public class MessageHandler {
         try {
             ResultSet rsStatCat = Query.selectData(DAO.createPreparedStatement(Queries.selectMonthByComments()));
             while (rsStatCat.next()) {
-                String sum = rsStatCat.getString(1);
-                String cat = rsStatCat.getString(2);
-                String com = rsStatCat.getString(3);
+                String sum = rsStatCat.getString("SUM(value)");
+                String cat = rsStatCat.getString("category");
+                String com = rsStatCat.getString("comment");
                 result.append(cat).append("\t").append(com).append("\t").append(sum).append("\n");
             }
         } catch (SQLException e) {
