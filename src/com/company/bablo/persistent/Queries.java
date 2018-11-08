@@ -98,6 +98,20 @@ public class Queries {
                 "YEAR(date)=YEAR(NOW()) " +
                 "GROUP BY category;";
     }
+    static String selectMonth(int month) {
+        return "SELECT category.category, SUM(costs.value) AS value,  budget.amount " +
+                "FROM costs " +
+                "INNER JOIN category " +
+                "ON costs.category_id=category.id " +
+                "INNER JOIN budget " +
+                "ON costs.category_id=budget.category_id " +
+                "INNER JOIN date " +
+                "ON costs.date_id=date.id " +
+                "WHERE MONTH(date)=" + month +
+                " AND " +
+                "YEAR(date)=YEAR(NOW()) " +
+                "GROUP BY category;";
+    }
 
     static final String selectLastMonth() {
         return "SELECT category.category, SUM(costs.value) AS value,  budget.amount" +
