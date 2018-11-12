@@ -7,15 +7,14 @@ import com.company.bablo.Terminal.Start;
  */
 
 public class BabloBot{
-    //private static Start startThread = new Start();     // объект потока работы с консолью
+    private static Start startThread = new Start();     // объект потока работы с консолью
     //private static TelegramBot telegramBot = new TelegramBot();
-    private static ConsoleController consoleController = new ConsoleController();
+    //private static ConsoleController consoleController = new ConsoleController();
 
     public static void main(String[] args) {
-        //startThread.run();
+        startThread.run();
         //telegramBot.run();
-        //startThread.run();
-        consoleController.run();
+        //consoleController.run();
     }
 
 

@@ -26,7 +26,7 @@ public class Start implements Runnable{
         System.out.println("* New cost");
         System.out.println("* In this month");
         System.out.println("* Last 10");
-        System.out.println("* Details");
+        System.out.println("* Year");
         System.out.println("* Preferences");
         System.out.println("* Quit");
         System.out.println();
@@ -97,9 +97,9 @@ public class Start implements Runnable{
             }
 
             // Отдельный класс с детализацией
-            if("d".equals(str)) {
+            if("y".equals(str.toLowerCase())) {
+                clearConsole();
                 printYear(2018);
-                System.out.println("details");
                 break;
             }
 
