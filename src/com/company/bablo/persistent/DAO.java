@@ -102,8 +102,8 @@ public class DAO {
         return rs;
     }
 
-    public static ResultSet selectionMonth(int month) {
-        String sql = Queries.selectMonth(month);
+    public static ResultSet selectionMonth(int month, int year) {
+        String sql = Queries.selectMonth(month, year);
         ResultSet rs = executePreparedStatement(createPreparedStatement(sql));
         return rs;
     }
@@ -119,6 +119,12 @@ public class DAO {
     // Сумма всех трат за текущий месяц
     public static ResultSet selectionTotalValuesMonth(int interval) {
         String sql = Queries.selectMonthTotal(interval);
+        ResultSet rs = executePreparedStatement(createPreparedStatement(sql));
+        return rs;
+    }
+
+    public static ResultSet selectionTotalValuesMonth(int month, int year) {
+        String sql = Queries.selectMonthTotal(month, year);
         ResultSet rs = executePreparedStatement(createPreparedStatement(sql));
         return rs;
     }

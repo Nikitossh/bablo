@@ -46,6 +46,19 @@ public class Categories {
         return listCategories;
     }
 
+    /** Get categories Set */
+    public static Set<String> getCategoriesSet(ResultSet resultSet) {
+        Set<String> setCategories = new TreeSet<>();
+        try {
+            while (resultSet.next()) {
+                setCategories.add(resultSet.getString(2));
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return setCategories;
+    }
+
      /** create String like: "cat1|cat2|catN..."
      * It's useful for RegularExpression using in TelegramBot */
     @Override

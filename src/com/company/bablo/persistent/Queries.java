@@ -48,6 +48,18 @@ public class Queries {
                 "YEAR(date)=YEAR(NOW());";
     }
 
+    static String selectMonthTotal(int month, int year) {
+        return "SELECT SUM(costs.value) AS value " +
+                "FROM costs " +
+                "INNER JOIN category " +
+                "ON costs.category_id=category.id " +
+                "INNER JOIN date " +
+                "ON costs.date_id=date.id " +
+                "WHERE MONTH(date)=" + month +
+                " AND " +
+                "YEAR(date)=" + year + ";";
+    }
+
 
     // Выборка за месяц по категории, сгруппированная по комментам.
     // Используется как case 7 в ConsoleController
@@ -98,7 +110,7 @@ public class Queries {
                 "YEAR(date)=YEAR(NOW()) " +
                 "GROUP BY category;";
     }
-    static String selectMonth(int month) {
+    static String selectMonth(int month, int year) {
         return "SELECT category.category, SUM(costs.value) AS value,  budget.amount " +
                 "FROM costs " +
                 "INNER JOIN category " +
@@ -109,8 +121,8 @@ public class Queries {
                 "ON costs.date_id=date.id " +
                 "WHERE MONTH(date)=" + month +
                 " AND " +
-                "YEAR(date)=YEAR(NOW()) " +
-                "GROUP BY category;";
+                "YEAR(date)=" + year +
+                " GROUP BY category;";
     }
 
     static final String selectLastMonth() {
