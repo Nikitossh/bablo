@@ -101,6 +101,7 @@ public class DAO {
         ResultSet rs = executePreparedStatement(createPreparedStatement(sql));
         return rs;
     }
+
     public static ResultSet selectionMonth(int month) {
         String sql = Queries.selectMonth(month);
         ResultSet rs = executePreparedStatement(createPreparedStatement(sql));

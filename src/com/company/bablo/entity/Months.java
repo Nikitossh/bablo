@@ -1,6 +1,6 @@
 package com.company.bablo.entity;
 
-public enum Monthes {
+public enum Months {
     JANUARY,
     FEBRUARY,
     MARCH,
