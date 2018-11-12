@@ -48,10 +48,11 @@ public class MonthCost {
         return theYear;
     }
 
-    public static void main(String[] args) {
-        ArrayList<MonthCost> year = getYear(2018);
+    // Это был main метод для проверки, но сейчас его оставлю
+    public static void printYear(int year) {
+        ArrayList<MonthCost> y = getYear(year);
         try {
-            printTable(year);
+            printTable(y);
         } catch (SQLException e) {
             e.printStackTrace();
         }

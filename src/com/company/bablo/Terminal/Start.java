@@ -4,6 +4,8 @@ import com.company.bablo.ConsoleView;
 import com.company.bablo.persistent.DAO;
 import java.util.Scanner;
 
+import static com.company.bablo.entity.MonthCost.printYear;
+
 /** *
  * Это новый основной класс запуска программы bablo в консоли.
  * Created by nik 02.10.2018
@@ -96,6 +98,7 @@ public class Start implements Runnable{
 
             // Отдельный класс с детализацией
             if("d".equals(str)) {
+                printYear(2018);
                 System.out.println("details");
                 break;
             }
