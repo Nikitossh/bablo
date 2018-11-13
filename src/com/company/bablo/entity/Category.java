@@ -1,8 +1,7 @@
 package com.company.bablo.entity;
 
 /**
- * This class is category of cost
- * @field required by ORM
+ * Сейчас не использую, пригодится при переходе на ORM
  * */
 
 public class Category {

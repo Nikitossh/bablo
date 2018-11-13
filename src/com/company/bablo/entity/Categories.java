@@ -1,61 +1,51 @@
 package com.company.bablo.entity;
 
-import com.company.bablo.persistent.DAO;
-
+import javax.validation.constraints.NotNull;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
 
+import static com.company.bablo.persistent.DAO.getCategoriesRS;
+
 /**
  * Created by nik on 6/2/17.
- * Modified by nik 15.10.2018
- * При создании экземпляра класса, создается список Map, конструктор которого опрашивает БД
- * и на основе ответа заполняет список.
+ * Утилитарный класс для работы с категориями
+ * @toString переписан для удобства работы с regexp
  */
 
 public class Categories {
-    private Map<Integer, String> map = new TreeMap<>();
+    private Map<Integer, String> map;
 
-    // todo: Стоит ли оставлять выборку в конструкторе класса или нет?
-    public Categories(){
-        try {
-            getCategoriesMap(DAO.getCategoriesRS(), map);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+    public Categories() throws SQLException{
+        map = getCategoriesMap(getCategoriesRS());
     }
 
     /** Get categories Map */
-    public Map<Integer, String> getCategoriesMap(ResultSet rs, Map<Integer, String> map) throws SQLException {
-        while (rs.next()) {
+    public static Map<Integer, String> getCategoriesMap(ResultSet rs) throws SQLException {
+        Map<Integer, String> map = new HashMap<>();
+        while (rs.next())
             map.put(rs.getInt(1), rs.getString(2));
-        }
+
         return map;
     }
 
-    /** Get categories List */
-    public static List<String> getCategoriesList(ResultSet resultSet) {
-        ArrayList<String> listCategories = new ArrayList<>();
-        try {
-            while (resultSet.next()) {
-                listCategories.add(resultSet.getString(2));
-            }
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-        }
-        return listCategories;
+    /** Get categories List
+     * Используется в ConsoleController
+     * */
+    public static List<String> getCategoriesList(ResultSet resultSet) throws SQLException {
+        ArrayList<String> list = new ArrayList<>();
+            while (resultSet.next())
+                list.add(resultSet.getString(2));
+
+        return list;
     }
 
     /** Get categories Set */
-    public static Set<String> getCategoriesSet(ResultSet resultSet) {
+    public static Set<String> getCategoriesSet(ResultSet resultSet) throws SQLException{
         Set<String> setCategories = new TreeSet<>();
-        try {
             while (resultSet.next()) {
                 setCategories.add(resultSet.getString(2));
             }
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-        }
         return setCategories;
     }
 

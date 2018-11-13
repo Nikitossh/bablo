@@ -2,6 +2,7 @@ package com.company.bablo.regexp;
 
 import org.junit.jupiter.api.Test;
 
+import java.sql.SQLException;
 import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -10,6 +11,9 @@ class ShablonatorTest {
     private Shablonator shablonator = new Shablonator();
     private String[] validData = {"", "100", "food", "test"};
     private String[] notMatched = {"", "", "", ""};
+
+    ShablonatorTest() throws SQLException {
+    }
 
     @Test
     void doMatch() {

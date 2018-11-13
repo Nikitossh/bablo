@@ -69,6 +69,7 @@ public class DAO {
 
 
     // Далее идет блок выполнения запросов полученных из класса Queries
+    // todo: Это Аццкий п;%№ец =( Пока не понимаю, как сделать правильно
 
     // Все что связано с датой и временем
     // Добавление даты
@@ -138,7 +139,7 @@ public class DAO {
         return rs;
     }
 
-    // Получение количества категорий. В ResultSet будет одно число!
+    // Получение количества категорий. В ResultSet будет число!
     public static ResultSet getCategoriesCountRS() {
         String sql = Queries.selectCountCategories();
         ResultSet rs = executePreparedStatement(createPreparedStatement(sql));

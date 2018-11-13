@@ -9,7 +9,6 @@ import static com.company.bablo.persistent.DAO.insertionData;
 
 /**
  * Created by nik on 4/12/17.
- * Modified 13/04/18
  * Last modified 15.10.2018
  */
 
@@ -68,12 +67,7 @@ public class Cost {
                 "comment: " + getComment();
     }
 
-    public static void printCost(Cost cost) {
-        System.out.print(cost.getDate().toString() + "  ");
-        System.out.print(cost.getValue() + "  ");
-        System.out.print(cost.getCategory() + "  ");
-        System.out.print(cost.getComment() + "  ");
-    }
+
 
     public  void setValue(int value) {
         this.value = value;

@@ -1,9 +1,6 @@
 package com.company.bablo.Telegram;
 
 import com.company.bablo.entity.Cost;
-import com.company.bablo.persistent.DAO;
-import com.company.bablo.persistent.Queries;
-import com.company.bablo.persistent.Query;
 import com.company.bablo.regexp.Shablonator;
 import org.telegram.telegrambots.ApiContextInitializer;
 import org.telegram.telegrambots.bots.DefaultBotOptions;
@@ -15,13 +12,12 @@ import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
-import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import static com.company.bablo.persistent.DAO.insertionCost;
 import static com.company.bablo.persistent.DAO.insertionData;
 
-public class TelegramBot extends TelegramLongPollingBot {
+public class TelegramBot extends TelegramLongPollingBot implements Runnable {
     private static String PROXY_HOST = "rfckc.teletype.live";
     private static Integer PROXY_PORT = 1080;
     private static String BOT_USERNAME = "myBabloBot";
@@ -29,12 +25,21 @@ public class TelegramBot extends TelegramLongPollingBot {
     private Shablonator shablonator = new Shablonator();
     MessageHandler messageHandler = new MessageHandler();
 
-    // Переопределяем конструктор для использования опций, в частности для proxy
-    protected TelegramBot(DefaultBotOptions botOptions) {
-        super(botOptions);
+    @Override
+    public void run() {
+        TelegramBot.startBot();
     }
 
     public static void main(String[] args) {
+        startBot();
+    }
+
+    // Переопределяем конструктор для использования опций, в частности для proxy
+    protected TelegramBot(DefaultBotOptions botOptions) throws SQLException {
+        super(botOptions);
+    }
+
+    public static void startBot() {
         // todo: Сделать логирование всех событий для отладки
         try {
             ApiContextInitializer.init();
@@ -46,7 +51,7 @@ public class TelegramBot extends TelegramLongPollingBot {
             botOptions.setProxyType(DefaultBotOptions.ProxyType.SOCKS5);
 
             botsApi.registerBot(new TelegramBot(botOptions));
-        } catch (TelegramApiException e) {
+        } catch (TelegramApiException | SQLException e) {
             e.printStackTrace();
         }
     }
@@ -72,6 +77,7 @@ public class TelegramBot extends TelegramLongPollingBot {
 
         /* Теперь сверяем полученное сообщение и обрабатываем его
           Ниже всё что связано со статистикой */
+        try {
         if (messageText.toLowerCase().equals("/stat")) {
             String monthStat = messageHandler.getStat();
             sendMsg(message, monthStat);
@@ -95,9 +101,9 @@ public class TelegramBot extends TelegramLongPollingBot {
                 messageText.matches(shablonator.BEFORE_YESTERDAY) ||
                 messageText.matches(shablonator.WITH_DATE)) {
             String[] costFields = shablonator.extractAllData(messageText);
+            //todo: убрать это в класс Cost
             if (Cost.checkCost(costFields)) {
                 Cost cost = new Cost(costFields);
-                sendMsg(message, "ВОТ: " + cost.toString());
                 insertionData(cost);
                 if (insertionCost(cost) != 0)
                     sendMsg(message, "Платеж: " + cost.toString() + " добавлен");
@@ -108,6 +114,10 @@ public class TelegramBot extends TelegramLongPollingBot {
         else {
             sendMsg(message, "У меня нет инструкций на этот счет. Вызовите /help");
         }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+
     }
 
     // Шлём в телеграмм текст

@@ -3,14 +3,12 @@ package com.company.bablo.persistent;
 import com.company.bablo.entity.Cost;
 // TODO: Символ ' ломает строку запроса. При его наличии необходимо его экранировать.
 
-/**
- * Created by nik on 4/17/17.
- *
- */
+/**  */
+
 public class Queries {
 
 // Cost
-    static final String insertNewCost(Cost cost) {
+    static String insertNewCost(Cost cost) {
         return "INSERT INTO bablo.costs" +
                 "(value, comment, date_id, category_id) " +
                 "VALUES (" +

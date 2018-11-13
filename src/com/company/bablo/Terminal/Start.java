@@ -1,24 +1,28 @@
 package com.company.bablo.Terminal;
 
-import com.company.bablo.ConsoleView;
 import com.company.bablo.persistent.DAO;
+
+import java.sql.SQLException;
 import java.util.Scanner;
 
 import static com.company.bablo.entity.MonthCost.printYear;
 
 /** *
- * Это новый основной класс запуска программы bablo в консоли.
+ * Интерфейс для работы с программой из консоли
  * Created by nik 02.10.2018
  */
 
 
-public class Start implements Runnable{
-    NewCostMenu ncm = new NewCostMenu();
-    Scanner scanner = new Scanner(System.in);
+public class Start implements Runnable {
+    private NewCostMenu ncm = new NewCostMenu();
+    private Scanner scanner = new Scanner(System.in);
 
-    /**
-     * Выводит основное меню на экран.
-     * */
+    @Override
+    public void run() {
+        startApp();
+    }
+
+    // Main Menu
     public void printMainMenu() {
         clearConsole();
         System.out.println("    Main Menu");
@@ -45,9 +49,12 @@ public class Start implements Runnable{
         /** Ожидаем нажатия нужной кнопки, остальные игнорируем*/
         while (true) {
             start.printMainMenu();
-            start.doSmth();
+            try {
+                start.doSmth();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
             printWaitAnyKey();
-            //clearConsole();
         }
     }
 
@@ -68,7 +75,7 @@ public class Start implements Runnable{
     }
 
     /** Бесконечный цикл в ожидании ввода одной из ключевых букв */
-    public void doSmth() {
+    public void doSmth() throws SQLException {
         while (true) {
             String str = scanner.next();
 
@@ -97,13 +104,15 @@ public class Start implements Runnable{
             }
 
             // Отдельный класс с детализацией
+            // Пока только выборка помесячно за год
+            // todo: Год запрашивать у пользователя, а не хардкодом
             if("y".equals(str.toLowerCase())) {
                 clearConsole();
                 printYear(2018);
                 break;
             }
 
-            // Меню с настройками программы. Неактивно до внедрения работы с файлами
+            // Меню с настройками программы. Неактивно до внедрения работы с I/O в файлы
             if("p".equals(str)) {
                 clearConsole();
                 System.out.println("Пункт с настройками программы еще не работает! Выберите другой пункт меню");
@@ -111,17 +120,12 @@ public class Start implements Runnable{
             }
 
             // Exit program with status 0
-            if("qq".equals(str)) {
+            if("qq".equals(str.toLowerCase())) {
                 System.out.println("Bye bye!");
                 System.exit(0);
             }
 
 
         }
-    }
-
-    @Override
-    public void run() {
-        startApp();
     }
 }

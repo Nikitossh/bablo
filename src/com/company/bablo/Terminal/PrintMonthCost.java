@@ -41,11 +41,11 @@ public class PrintMonthCost {
         }
     }
 
+    // Вывод сводной таблицы
     public static void printTable(ArrayList<MonthCost> list) throws SQLException {
         // Печатаю шапку таблицы
         printMonths(list);
         printSeparators(list);
-
         // Получаю все категории в виде TreeSet
         Set<String> set = getCategoriesSet(getCategoriesRS());
         Iterator iterator = set.iterator();

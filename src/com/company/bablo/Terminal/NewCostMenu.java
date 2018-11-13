@@ -4,6 +4,8 @@ import com.company.bablo.entity.Cost;
 import com.company.bablo.regexp.Shablonator;
 import com.company.bablo.util.Inputs;
 
+import java.sql.SQLException;
+
 import static com.company.bablo.entity.Cost.addCost;
 
 /**
@@ -12,7 +14,15 @@ import static com.company.bablo.entity.Cost.addCost;
  * */
 
 public class NewCostMenu {
-     Shablonator shablonator = new Shablonator();
+    // todo: Убрать этот ужас
+     Shablonator shablonator;
+    {
+        try {
+            shablonator = new Shablonator();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
     public void printMenu() {
         System.out.println("Введите трату в одном из следующих форматов: ");
