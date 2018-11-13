@@ -47,7 +47,7 @@ public class PrintMonthCost {
         printMonths(list);
         printSeparators(list);
         // Получаю все категории в виде TreeSet
-        Set<String> set = getCategoriesSet(getCategoriesRS());
+        Set<String> set = getCategoriesSet();
         Iterator iterator = set.iterator();
         while (iterator.hasNext()) {
             String category = (String) iterator.next();

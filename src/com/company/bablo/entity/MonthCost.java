@@ -16,9 +16,8 @@ public class MonthCost {
     private int year;
     private String name;
 
-
-
     // При создании класса указываем месяц и год, метод getMonthCost() заполняет мапу
+    // todo: посоветоваться с кем-то знающим по поводу инициализации в конструкторе. Какая-то хрень.
     public MonthCost(int month, int year, String name) {
         this.name = name;
         this.month = month;

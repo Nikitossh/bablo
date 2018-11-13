@@ -1,5 +1,6 @@
 package com.company.bablo.entity;
 
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.Arrays;
 
@@ -7,11 +8,11 @@ import static com.company.bablo.entity.Date.selectDate;
 import static com.company.bablo.persistent.DAO.insertionCost;
 import static com.company.bablo.persistent.DAO.insertionData;
 
-/**
- * Created by nik on 4/12/17.
- * Last modified 15.10.2018
+/** Класс, описывающий основную сущность программы - единичную трату(cost)
+ * будет мапиться из таблицы costs базы bablo
+ todo: что сломается когда я буду вынужден добавить поле id,
+ todo: Убрать из БД таблицу date, добавить одноименную колонку в costs. Пофиг на дублирование дат... или нет?
  */
-
 public class Cost {
     private int value;
     private String category;
@@ -28,24 +29,32 @@ public class Cost {
 
     public Cost(){};
 
-    public Cost(int value, String category, String comment, LocalDate date) {
-        this.value = value;
-        this.category = category;
-        this.comment = comment;
-        this.date = date;
-    }
-
-    // todo: Сделать класс абстрактным, реализовать разные методы добавления из ТелеграммБота и консоли
     public static void addCost(Cost cost) {
-        // Сначала всегда добавляем дату
-        insertionData(cost);
+        try {
+            // если проверка прошла,
+            if (check(cost))
+            // то добавляем дату,
+            insertionData(cost);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        // если в ответ на добавление не 0, то добалено успешно
         if (insertionCost(cost) != 0)
             System.out.println("Cost добавлен в БД.");
     }
 
-    /** Check if some values are NULL or equals "" */
-    // todo: Проверять сам cost, а не предварительные поля. Это вынести в другую проверку, перед созданием costa
-    public static boolean checkCost(String[] args) {
+    public static boolean check(Cost cost) throws SQLException {
+        if (!(cost.getValue() >= 0))
+            return false;
+        if (!Categories.getCategoriesSet().contains(cost.getCategory()))
+            return false;
+        if (cost.getComment().isEmpty())
+            return false;
+        return true;
+    }
+
+    /** Check fields if some values are NULL or equals to empty array */
+    public static boolean checkFields(String[] args) {
         String[] emptyArray = {"", "", ""};
         if(args[0] != null | args[1] != null | args[2] != null) {
             if (Arrays.equals(args, emptyArray)) {
@@ -55,7 +64,7 @@ public class Cost {
             return true;
         }
         else
-            System.out.println("Не хватает данных для полноценного создания объекта!");
+            System.out.println("Не хватает данных для создания объекта!");
         return false;
     }
 
@@ -67,12 +76,6 @@ public class Cost {
                 "comment: " + getComment();
     }
 
-
-
-    public  void setValue(int value) {
-        this.value = value;
-    }
-
     public  int getValue() {
         return value;
     }
@@ -81,25 +84,11 @@ public class Cost {
         return category;
     }
 
-    public  void setCategory(String category) {
-        this.category = category;
-    }
-
     public  String getComment() {
         return comment;
-    }
-
-    public  void setComment(String comment) {
-        this.comment = comment;
     }
 
     public   LocalDate getDate() {
         return date;
     }
-
-    public  void setDate(LocalDate date) {
-        this.date = date;
-    }
-
-
 }

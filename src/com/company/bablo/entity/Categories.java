@@ -17,11 +17,12 @@ public class Categories {
     private Map<Integer, String> map;
 
     public Categories() throws SQLException{
-        map = getCategoriesMap(getCategoriesRS());
+        map = getCategoriesMap();
     }
 
     /** Get categories Map */
-    public static Map<Integer, String> getCategoriesMap(ResultSet rs) throws SQLException {
+    public static Map<Integer, String> getCategoriesMap() throws SQLException {
+        ResultSet rs = getCategoriesRS();
         Map<Integer, String> map = new HashMap<>();
         while (rs.next())
             map.put(rs.getInt(1), rs.getString(2));
@@ -32,7 +33,8 @@ public class Categories {
     /** Get categories List
      * Используется в ConsoleController
      * */
-    public static List<String> getCategoriesList(ResultSet resultSet) throws SQLException {
+    public static List<String> getCategoriesList() throws SQLException {
+        ResultSet resultSet = getCategoriesRS();
         ArrayList<String> list = new ArrayList<>();
             while (resultSet.next())
                 list.add(resultSet.getString(2));
@@ -41,7 +43,8 @@ public class Categories {
     }
 
     /** Get categories Set */
-    public static Set<String> getCategoriesSet(ResultSet resultSet) throws SQLException{
+    public static Set<String> getCategoriesSet() throws SQLException{
+        ResultSet resultSet = getCategoriesRS();
         Set<String> setCategories = new TreeSet<>();
             while (resultSet.next()) {
                 setCategories.add(resultSet.getString(2));

@@ -14,8 +14,8 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import java.sql.SQLException;
 
+import static com.company.bablo.entity.Cost.addCost;
 import static com.company.bablo.persistent.DAO.insertionCost;
-import static com.company.bablo.persistent.DAO.insertionData;
 
 public class TelegramBot extends TelegramLongPollingBot implements Runnable {
     private static String PROXY_HOST = "rfckc.teletype.live";
@@ -100,11 +100,12 @@ public class TelegramBot extends TelegramLongPollingBot implements Runnable {
                 messageText.matches(shablonator.YESTERDAY) ||
                 messageText.matches(shablonator.BEFORE_YESTERDAY) ||
                 messageText.matches(shablonator.WITH_DATE)) {
+            // Получаем данные полей из текста сообщения
             String[] costFields = shablonator.extractAllData(messageText);
-            //todo: убрать это в класс Cost
-            if (Cost.checkCost(costFields)) {
+            // Чекаем эти поля, чекаем валидность коста и добавляем в БД, с оповещением в Телегу
+            if (Cost.checkFields(costFields)) {
                 Cost cost = new Cost(costFields);
-                insertionData(cost);
+                addCost(cost);
                 if (insertionCost(cost) != 0)
                     sendMsg(message, "Платеж: " + cost.toString() + " добавлен");
             }

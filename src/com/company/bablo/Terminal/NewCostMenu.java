@@ -34,7 +34,7 @@ public class NewCostMenu {
         String userData = Inputs.inputString();
         String[] costFields = shablonator.extractAllData(userData);
         // Если кост прошел проверку на валидность
-        if (Cost.checkCost(costFields)) {
+        if (Cost.checkFields(costFields)) {
             // Собираем сущность и добавляем дату
             Cost cost = new Cost(costFields);
             addCost(cost);
