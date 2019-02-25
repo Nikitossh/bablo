@@ -1,3 +1,3 @@
 Manifest-Version: 1.0
-Main-Class: com.company.bablo.Terminal.StartApp
+Main-Class: com.gmail.nikitko1988.Terminal.StartApp
 
